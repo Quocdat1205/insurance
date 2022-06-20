@@ -1,6 +1,6 @@
 import { BigNumber, Contract, ethers, providers } from "ethers";
 import { weiToEther } from "../helpers/handler";
-import { INSURANCE_ABI } from "../constants/abi/INSURANCE_ABI";
+import { INSURANCE_ABI } from "@constants/abi/INSURANCE_ABI";
 
 class InsuranceContract {
   provider: providers.Web3Provider;
