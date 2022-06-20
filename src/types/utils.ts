@@ -133,3 +133,8 @@ export type ActionType =
   | {
       type: "RESET_WEB3_PROVIDER";
     };
+
+export type AuthType = {
+  accessToken: string;
+  handleLogIn: Function;
+};

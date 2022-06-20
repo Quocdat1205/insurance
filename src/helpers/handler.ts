@@ -70,7 +70,7 @@ export const CHAINS: {
   },
 
   42: {
-    urls: ["wss://kovan.infura.io/ws/v3/f87b967bc65a41c0a1a25635493fa482"],
+    urls: ["https://kovan.infura.io/ws/v3/f87b967bc65a41c0a1a25635493fa482"],
     name: "Kovan",
   },
 };
@@ -115,3 +115,16 @@ export const etherToWei = (amount: number | string) =>
 
 export const weiToEther = (wei: string | BigNumber) =>
   parseFloat(ethers.utils.formatEther(wei));
+
+export const formatDate = (_date: Date) => {
+  let newDate = new Date(_date);
+  return newDate.getTime() / 1000;
+};
+
+export const formatPriceToWeiValue = (_num: number) => {
+  return BigInt(_num * 10 ** 18);
+};
+
+export const formatWeiValueToPrice = (_num: number) => {
+  return Number(_num) / 10 ** 18;
+};

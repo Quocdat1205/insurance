@@ -1,10 +1,4 @@
-import {
-  createContext,
-  ReactNode,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react";
+import { createContext, ReactNode, useEffect, useMemo, useRef } from "react";
 import { useQuery } from "react-query";
 import { ethers, providers } from "ethers";
 import { ContractCaller } from "@contract/index";
@@ -69,7 +63,7 @@ const useWeb3WalletState = (
   const contractCaller = useRef<ContractCaller | null>(null);
 
   const activate = async (connectorId: ConnectorId, chainId?: number) => {
-    const connector = connectorsData[connectorId].connector;
+    const connector = connectorsData[connectorId].connector;    
     connector.deactivate();
     connector instanceof WalletConnect
       ? await connector.activate(chainId)

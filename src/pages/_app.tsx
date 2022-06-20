@@ -2,8 +2,10 @@ import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
 import { theme } from "@constants/theme";
 import { Web3WalletProvider } from "src/providers/MetaMaskProvider";
-import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { useRef } from "react";
+import Layout from "@components/utils/Layout";
+import AuthProvider from "src/providers/AuthProvider";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const qcRef = useRef(
@@ -34,7 +36,11 @@ function MyApp({ Component, pageProps }: AppProps) {
             },
           }}
         >
-          <Component {...pageProps} />
+          <AuthProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </AuthProvider>
         </Web3WalletProvider>
       </QueryClientProvider>
     </ChakraProvider>

@@ -4,3 +4,11 @@ import { baseURL } from "@constants/endpoint";
 export const fetcher = axios.create({ baseURL, withCredentials: true });
 
 export * from "./insurance";
+
+export const getPriceEth = async () => {
+  const { data } = await axios.get(
+    "https://nami.exchange/api/v3/spot/market_watch?symbol=ETHUSDT"
+  );
+
+  return data;
+};

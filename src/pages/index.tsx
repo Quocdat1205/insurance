@@ -3,6 +3,7 @@ import { Box, Button, Text } from "@chakra-ui/react";
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
 import Header from "@components/utils/Header";
 import useEffect from "react";
+import FormBuyInsurance from "@components/home/FormBuyInsurance";
 
 const Home: NextPage = () => {
   const {
@@ -27,12 +28,9 @@ const Home: NextPage = () => {
     <Box>
       <Header title="Insurance" image="favicon.ico" />
       {account ? (
-        <>
-          <Text>Connect successfully</Text>
-          <Button onClick={() => deactivate()}>Disconnect</Button>
-          <Button onClick={() => switchNetwork(42)}>Switch Network</Button>
-          <Button onClick={() => handleSignMessage()}>Sign</Button>
-        </>
+        <Box color="black" textAlign="center">
+          <FormBuyInsurance />
+        </Box>
       ) : (
         <Button onClick={() => activate("metaMask")}>Connect Wallet</Button>
       )}
