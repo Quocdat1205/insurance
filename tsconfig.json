@@ -22,7 +22,7 @@
       "@api/*": ["src/api/*"],
       "@contract/*": ["src/contract/*"],
       "@types": ["src/types/index"],
-      "@helper/*": ["src/helper/*"]
+      "@helpers/*": ["src/helpers/*"]
     },
     "incremental": true
   },

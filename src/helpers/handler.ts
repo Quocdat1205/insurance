@@ -1,5 +1,6 @@
 import { Chains } from "@constants/chains";
 import { ChainData } from "@types";
+import { BigNumber, ethers } from "ethers";
 
 export const truncateAddress = (address: string) => {
   if (!address) return "No Account";
@@ -108,3 +109,9 @@ export const URLS: { [chainId: number]: string[] } = Object.keys(
 
   return accumulator;
 }, {});
+
+export const etherToWei = (amount: number | string) =>
+  ethers.utils.parseEther(amount.toString());
+
+export const weiToEther = (wei: string | BigNumber) =>
+  parseFloat(ethers.utils.formatEther(wei));

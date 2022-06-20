@@ -1,13 +1,13 @@
 import {
   createContext,
   ReactNode,
-  useContext,
   useEffect,
   useMemo,
+  useRef,
 } from "react";
 import { useQuery } from "react-query";
 import { ethers, providers } from "ethers";
-// import { ContractCaller } from "@contract";
+import { ContractCaller } from "@contract/index";
 import { CoinbaseWallet } from "@web3-react/coinbase-wallet";
 import {
   initializeConnector,
@@ -66,7 +66,7 @@ const useWeb3WalletState = (
 ) => {
   const { connector, account, chainId, isActive, error, provider } =
     useWeb3React();
-  // const contractCaller = useRef<ContractCaller | null>(null);
+  const contractCaller = useRef<ContractCaller | null>(null);
 
   const activate = async (connectorId: ConnectorId, chainId?: number) => {
     const connector = connectorsData[connectorId].connector;
@@ -86,13 +86,13 @@ const useWeb3WalletState = (
     connector.connectEagerly && connector.connectEagerly();
   }, [connector]);
 
-  // useEffect(() => {
-  //   if (provider) {
-  //     contractCaller.current = new ContractCaller(
-  //       provider as providers.Web3Provider
-  //     );
-  //   }
-  // }, [provider]);
+  useEffect(() => {
+    if (provider) {
+      contractCaller.current = new ContractCaller(
+        provider as providers.Web3Provider
+      );
+    }
+  }, [provider]);
 
   const { data: balance } = useQuery(
     "balance",
@@ -130,6 +130,7 @@ const useWeb3WalletState = (
     connector: getConnectorInfo(connector),
     provider,
     balance,
+    contractCaller,
   };
 };
 
