@@ -21,7 +21,8 @@
       "@store/*": ["src/store/*"],
       "@api/*": ["src/api/*"],
       "@contract/*": ["src/contract/*"],
-      "@types": ["src/types/index"]
+      "@types": ["src/types/index"],
+      "@helper/*": ["src/helper/*"]
     },
     "incremental": true
   },
