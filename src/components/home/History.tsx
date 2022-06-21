@@ -26,9 +26,13 @@ const History = () => {
 
   useEffect(() => {
     getHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
+
   const getHistory = async () => {
     const history = await getInsurancByAddress(account as string);
+    console.log(history);
+
     setHistoryByAddress(history);
   };
 
@@ -50,7 +54,7 @@ const History = () => {
           {historyByAddress ? (
             historyByAddress.map((value: any, index: number) => {
               return (
-                <Tr>
+                <Tr key={index}>
                   <Td>{value.deposit}</Td>
                   <Td>{value.current_price}</Td>
                   <Td>{value.liquidation_price}</Td>

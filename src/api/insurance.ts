@@ -33,7 +33,7 @@ export const checkExpiredCookie = async () => {
 export const getInsurancByAddress = async (walletAddress: string) => {
   try {
     const { data } = await fetcher.get(
-      `/get-insurance-by-address?owner=${walletAddress}`
+      `/get-insurance-by-address?owner=${walletAddress.toUpperCase()}`
     );
 
     return data;
