@@ -52,7 +52,7 @@ const History = () => {
             historyByAddress.map((value: any, index: number) => {
               return (
                 <Tr key={index}>
-                  <Td>{value.deposit}</Td>
+                  <Td>{value.deposit / 10 ** 18}</Td>
                   <Td>{value.current_price}</Td>
                   <Td>{value.liquidation_price}</Td>
                   <Td>{`${formatTimestampToDate(value.expired)}`}</Td>
