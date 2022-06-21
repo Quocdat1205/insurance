@@ -17,6 +17,8 @@ import {
   formatPriceToWeiValue,
   formatDate,
   formatWeiValueToPrice,
+  etherToWei,
+  weiToEther
 } from "@helpers/handler";
 
 const FormBuyInsurance = () => {
@@ -30,20 +32,21 @@ const FormBuyInsurance = () => {
     const dataPost: BuyInsuranceType = {
       owner: account as string,
       current_price: data[0].h.toFixed(),
-      liquidation_price: formatPriceToWeiValue(input.liquidation_price),
+      liquidation_price: input.liquidation_price,
       deposit: formatWeiValueToPrice(input.liquidation_price),
       expired: formatDate(input.expired),
     };
 
+    console.log(dataPost.liquidation_price, dataPost.deposit, dataPost.current_price, dataPost.expired)
+
     console.log(
       await contractCaller.current?.insuranceContract.contract.buyInsurance(
-        dataPost.deposit,
         dataPost.owner,
-        dataPost.deposit,
+        100000000000000, //0.0001
         dataPost.current_price,
         dataPost.liquidation_price,
         dataPost.expired,
-        { value: dataPost.deposit }
+        { value: 100000000000000 }
       )
     );
 

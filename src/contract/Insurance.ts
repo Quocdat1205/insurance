@@ -15,7 +15,7 @@ class InsuranceContract {
     this.contract = new ethers.Contract(
       contractAddress,
       contractAbi || INSURANCE_ABI,
-      provider
+      provider.getSigner()
     );
   }
 
