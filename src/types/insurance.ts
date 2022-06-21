@@ -7,7 +7,7 @@ export type BuyInsuranceType = {
   owner: string;
   current_price: number;
   liquidation_price: bigint;
-  deposit: number;
+  deposit: number | bigint;
   expired: number;
 };
 
