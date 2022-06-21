@@ -53,6 +53,12 @@ const FormBuyInsurance = () => {
     )
 
     if (buy) {
+      // const {data} = await buyInsurance(dataPost, accessToken);
+      // if (data) {
+      //   console.log("save data be success") 
+      // } else {
+      //   console.log("save data be err") 
+      // }
       swal("Buy success!")
     } else {
       console.log("Error submitting transaction");

@@ -4,6 +4,7 @@ import useWeb3Wallet from "@hooks/useWeb3Wallet";
 import Header from "@components/utils/Header";
 import useEffect from "react";
 import FormBuyInsurance from "@components/home/FormBuyInsurance";
+import History from "@components/home/History";
 
 const Home: NextPage = () => {
   const {
@@ -30,6 +31,7 @@ const Home: NextPage = () => {
       {account ? (
         <Box color="black" textAlign="center">
           <FormBuyInsurance />
+          <History />
         </Box>
       ) : (
         <Button onClick={() => activate("metaMask")}>Connect Wallet</Button>
