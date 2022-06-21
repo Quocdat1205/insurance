@@ -17,7 +17,7 @@ const Layout = ({ children }: PropType) => {
     >
       {account ? (
         <Flex overflow="hidden" flex={1} overflowY="scroll" display="flex">
-          <Box bg="#F6F6F6" width="100%" boxSizing="border-box">
+          <Box width="100%" boxSizing="border-box">
             <Box width="95%" margin="auto">
               {children}
             </Box>

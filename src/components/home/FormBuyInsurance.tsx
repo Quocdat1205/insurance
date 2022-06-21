@@ -10,18 +10,11 @@ import {
 } from "@chakra-ui/react";
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
 import { formBuyInsurance } from "@constants/formBuyInsurance";
-import { getPriceEth, buyInsurance } from "@api";
+import { getPriceEth } from "@api";
 import { BuyInsuranceType } from "@types";
 import useAuth from "@hooks/useAuth";
-import {
-  formatPriceToWeiValue,
-  formatDate,
-  formatWeiValueToPrice,
-  etherToWei,
-  weiToEther
-} from "@helpers/handler";
+import { formatPriceToWeiValue, formatDate } from "@helpers/handler";
 import swal from "sweetalert";
-import { parse } from "path";
 
 const FormBuyInsurance = () => {
   const { account, contractCaller } = useWeb3Wallet();
@@ -34,7 +27,7 @@ const FormBuyInsurance = () => {
     if (!validateValueInsurance(input.deposit)) return;
     if (!validateLiquidationPrice(input.liquidation_price)) return;
     if (!validateExpired(formatDate(input.expired))) return;
-  
+
     const dataPost: BuyInsuranceType = {
       owner: account as string,
       deposit: formatPriceToWeiValue(input.deposit),
@@ -43,23 +36,24 @@ const FormBuyInsurance = () => {
       expired: formatDate(input.expired),
     };
 
-    const buy = await contractCaller.current?.insuranceContract.contract.buyInsurance(
-      dataPost.owner,
-      dataPost.deposit,
-      dataPost.current_price,
-      dataPost.liquidation_price,
-      dataPost.expired,
-      { value: dataPost.deposit }  
-    )
+    const buy =
+      await contractCaller.current?.insuranceContract.contract.buyInsurance(
+        dataPost.owner,
+        dataPost.deposit,
+        dataPost.current_price,
+        dataPost.liquidation_price,
+        dataPost.expired,
+        { value: dataPost.deposit }
+      );
 
     if (buy) {
       // const {data} = await buyInsurance(dataPost, accessToken);
       // if (data) {
-      //   console.log("save data be success") 
+      //   console.log("save data be success")
       // } else {
-      //   console.log("save data be err") 
+      //   console.log("save data be err")
       // }
-      swal("Buy success!")
+      swal("Buy success!");
     } else {
       console.log("Error submitting transaction");
       swal("Error submitting transaction");
@@ -69,46 +63,46 @@ const FormBuyInsurance = () => {
 
   const validateValueInsurance = (value: number) => {
     let status: Boolean | undefined = undefined;
-    switch(true) {
-      case (value > 100):
+    switch (true) {
+      case value > 100:
         status = false;
-        swal("Value Insurance must be less than 100 ETH")        
+        swal("Value Insurance must be less than 100 ETH");
         break;
-      case (value <= 0):
+      case value <= 0:
         status = false;
-        swal("Value Insurance must be more than number 0 ETH")       
+        swal("Value Insurance must be more than number 0 ETH");
         break;
       default:
-        status = true
+        status = true;
     }
     return status;
-  }
+  };
   const validateLiquidationPrice = (value: number) => {
     let status: Boolean | undefined = undefined;
-    switch(true) {
-      case (value <= 0):
+    switch (true) {
+      case value <= 0:
         status = false;
-        swal("Value Insurance must be more than number 0 ETH")       
+        swal("Value Insurance must be more than number 0 ETH");
         break;
       default:
-        status = true
+        status = true;
     }
     return status;
-  }
+  };
   const validateExpired = (value: number) => {
     let status: Boolean | undefined = undefined;
-    let date = new Date()
-    let date7 = date.setDate(date.getDate() + 7)/1000; 
-    switch(true) {
-      case (value <= date7):
+    let date = new Date();
+    let date7 = date.setDate(date.getDate() + 7) / 1000;
+    switch (true) {
+      case value <= date7:
         status = false;
-        swal("Date expired must be 7 days from the current time")       
+        swal("Date expired must be 7 days from the current time");
         break;
       default:
-        status = true
+        status = true;
     }
     return status;
-  }
+  };
 
   return (
     <Box marginTop="1rem">
@@ -119,10 +113,10 @@ const FormBuyInsurance = () => {
           fontWeight="bold"
           fontSize="2rem"
         >
-          <Button onClick={() => handleLogIn()}>Sign</Button>
           Insurance App
         </Text>
         {account && <Text>Your Address: {account}</Text>}
+        <Button onClick={() => handleLogIn()}>Sign</Button>
       </Box>
       <Box marginTop="1rem">
         <Text color="rgb(58, 138, 132)" fontWeight="bold" fontSize="1.5rem">
@@ -150,7 +144,7 @@ const FormBuyInsurance = () => {
                     })}
                   </>
                 ) : (
-                  <FormControl margin="1rem 0" overflow="hidden"> 
+                  <FormControl margin="1rem 0" overflow="hidden">
                     <FormLabel htmlFor={value.name}>{value.label}</FormLabel>
                     <Input
                       name={value.name}

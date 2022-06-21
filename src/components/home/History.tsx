@@ -11,12 +11,9 @@ import {
   TableContainer,
 } from "@chakra-ui/react";
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
-
 import { getInsurancByAddress } from "@api";
-
+import { formatTimestampToDate } from "@helpers/handler";
 import useAuth from "@hooks/useAuth";
-
-import swal from "sweetalert";
 
 const History = () => {
   const { account, contractCaller } = useWeb3Wallet();
@@ -58,7 +55,7 @@ const History = () => {
                   <Td>{value.deposit}</Td>
                   <Td>{value.current_price}</Td>
                   <Td>{value.liquidation_price}</Td>
-                  <Td>{value.expired}</Td>
+                  <Td>{`${formatTimestampToDate(value.expired)}`}</Td>
                   <Td>{value.state}</Td>
                   <Td isNumeric>
                     {value.owner.slice(0, 5)}

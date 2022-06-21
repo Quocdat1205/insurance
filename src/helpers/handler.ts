@@ -121,6 +121,14 @@ export const formatDate = (_date: Date) => {
   return newDate.getTime() / 1000;
 };
 
+export const formatTimestampToDate = (_date: number) => {
+  let date = _date * 1000;
+
+  let newDate = new Date(date).toLocaleDateString();
+
+  return newDate;
+};
+
 export const formatPriceToWeiValue = (_num: number) => {
   return BigInt(_num * 10 ** 18);
 };
