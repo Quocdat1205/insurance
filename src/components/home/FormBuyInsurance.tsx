@@ -27,6 +27,7 @@ const FormBuyInsurance = () => {
     if (!validateValueInsurance(input.deposit)) return;
     if (!validateLiquidationPrice(input.liquidation_price)) return;
     if (!validateExpired(formatDate(input.expired))) return;
+    if (!accessToken) return swal("Please sign metamask!");
 
     const dataPost: BuyInsuranceType = {
       owner: account as string,
@@ -47,9 +48,7 @@ const FormBuyInsurance = () => {
       );
 
     if (buy) {
-      const data = await buyInsurance(dataPost, accessToken);
-
-      console.log(data);
+      await buyInsurance(dataPost, accessToken);
 
       swal("Buy success!");
     } else {
@@ -113,7 +112,13 @@ const FormBuyInsurance = () => {
           Insurance App
         </Text>
         {account && <Text>Your Address: {account}</Text>}
-        <Button onClick={() => handleLogIn()}>Sign</Button>
+        <Button
+          onClick={() => handleLogIn()}
+          margin="0.5rem"
+          background="#76c376"
+        >
+          Sign
+        </Button>
       </Box>
       <Box marginTop="1rem">
         <Text color="rgb(58, 138, 132)" fontWeight="bold" fontSize="1.5rem">
