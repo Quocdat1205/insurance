@@ -13,9 +13,14 @@ import { formBuyInsurance } from "@constants/formBuyInsurance";
 import { getPriceEth, buyInsurance } from "@api";
 import { BuyInsuranceType } from "@types";
 import useAuth from "@hooks/useAuth";
+import {
+  formatPriceToWeiValue,
+  formatDate,
+  formatWeiValueToPrice,
+} from "@helpers/handler";
 
 const FormBuyInsurance = () => {
-  const { account } = useWeb3Wallet();
+  const { account, contractCaller } = useWeb3Wallet();
   const { accessToken, handleLogIn } = useAuth();
   const [input, setInput] = useState<any>();
 
@@ -25,14 +30,24 @@ const FormBuyInsurance = () => {
     const dataPost: BuyInsuranceType = {
       owner: account as string,
       current_price: data[0].h.toFixed(),
-      liquidation_price: input.liquidation_price,
-      deposit: input.liquidation_price,
-      expired: input.expired,
+      liquidation_price: formatPriceToWeiValue(input.liquidation_price),
+      deposit: formatWeiValueToPrice(input.liquidation_price),
+      expired: formatDate(input.expired),
     };
 
-    const response = await buyInsurance(dataPost, accessToken);
+    console.log(
+      await contractCaller.current?.insuranceContract.contract.buyInsurance(
+        dataPost.deposit,
+        dataPost.owner,
+        dataPost.deposit,
+        dataPost.current_price,
+        dataPost.liquidation_price,
+        dataPost.expired,
+        { value: dataPost.deposit }
+      )
+    );
 
-    console.log(response, accessToken);
+    // const response = await buyInsurance(dataPost, accessToken);
   };
 
   return (

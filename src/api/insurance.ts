@@ -11,7 +11,7 @@ export const logIn = async (props: LogIntype) => {
         walletAddress,
         signature,
       },
-      // { withCredentials: false }
+      { withCredentials: false }
     );
 
     return data;

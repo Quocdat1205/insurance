@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { useRef } from "react";
 import Layout from "@components/utils/Layout";
 import AuthProvider from "src/providers/AuthProvider";
+import InsuranceProvider from "src/providers/InsuranceProvider";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const qcRef = useRef(
@@ -37,9 +38,11 @@ function MyApp({ Component, pageProps }: AppProps) {
           }}
         >
           <AuthProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <InsuranceProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </InsuranceProvider>
           </AuthProvider>
         </Web3WalletProvider>
       </QueryClientProvider>
