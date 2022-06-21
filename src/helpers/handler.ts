@@ -136,3 +136,7 @@ export const formatPriceToWeiValue = (_num: number) => {
 export const formatWeiValueToPrice = (_num: number) => {
   return Number(_num) / 10 ** 18;
 };
+
+export const parseNumber = (_number: any) => {
+  return parseInt(_number);
+};

@@ -1,5 +1,6 @@
 import { fetcher } from ".";
 import { LogIntype, BuyInsuranceType } from "src/types/insurance";
+import { parseNumber } from "@helpers/handler";
 
 export const logIn = async (props: LogIntype) => {
   try {
@@ -59,13 +60,17 @@ export const buyInsurance = async (
   try {
     const { owner, current_price, liquidation_price, deposit, expired } = props;
 
+    const price = JSON.stringify(deposit, (_, v) =>
+      typeof v === "bigint" ? `${v}n` : v
+    ).replace(/"(-?\d+)n"/g, (_, a) => a);
+
     const { data } = await fetcher.post(
       "/buy-insurance",
       {
         owner,
-        current_price,
-        liquidation_price,
-        deposit,
+        current_price: parseNumber(current_price as unknown as string),
+        liquidation_price: parseNumber(liquidation_price),
+        deposit: parseNumber(price),
         expired,
       },
       {
@@ -77,6 +82,8 @@ export const buyInsurance = async (
 
     return data;
   } catch (error) {
+    console.error(error);
+
     return false;
   }
 };

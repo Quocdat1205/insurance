@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
 import { formBuyInsurance } from "@constants/formBuyInsurance";
-import { getPriceEth } from "@api";
+import { buyInsurance, getPriceEth } from "@api";
 import { BuyInsuranceType } from "@types";
 import useAuth from "@hooks/useAuth";
 import { formatPriceToWeiValue, formatDate } from "@helpers/handler";
@@ -47,18 +47,15 @@ const FormBuyInsurance = () => {
       );
 
     if (buy) {
-      // const {data} = await buyInsurance(dataPost, accessToken);
-      // if (data) {
-      //   console.log("save data be success")
-      // } else {
-      //   console.log("save data be err")
-      // }
+      const data = await buyInsurance(dataPost, accessToken);
+
+      console.log(data);
+
       swal("Buy success!");
     } else {
       console.log("Error submitting transaction");
       swal("Error submitting transaction");
     }
-    // const response = await buyInsurance(dataPost, accessToken);
   };
 
   const validateValueInsurance = (value: number) => {
