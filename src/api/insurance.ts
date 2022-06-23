@@ -1,5 +1,5 @@
 import { fetcher } from ".";
-import { LogIntype, BuyInsuranceType } from "src/types/insurance";
+import { LogIntype, BuyInsuranceType, PriceClaim } from "src/types/insurance";
 import { parseNumber } from "@helpers/handler";
 
 export const logIn = async (props: LogIntype) => {
@@ -72,6 +72,39 @@ export const buyInsurance = async (
         liquidation_price: parseNumber(liquidation_price),
         deposit: parseNumber(price),
         expired,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    console.error(error);
+
+    return false;
+  }
+};
+
+export const getPriceClaim = async (
+  props: PriceClaim,
+  accessToken: string
+) => {
+  try {
+    const {current_price, liquidation_price, deposit } = props;
+
+    // const price = JSON.stringify(deposit, (_, v) =>
+    //   typeof v === "bigint" ? `${v}n` : v
+    // ).replace(/"(-?\d+)n"/g, (_, a) => a);
+
+    const { data } = await fetcher.post(
+      "/get-price-claim",
+      {
+        value: parseNumber(deposit),
+        p_start: parseNumber(current_price as unknown as string),
+        p_stop: parseNumber(liquidation_price),
       },
       {
         headers: {

@@ -8,6 +8,7 @@ import {
   Select,
   Button,
 } from "@chakra-ui/react";
+
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
 import { formBuyInsurance } from "@constants/formBuyInsurance";
 import { buyInsurance, getPriceEth } from "@api";
@@ -124,6 +125,8 @@ const FormBuyInsurance = () => {
         <Text color="rgb(58, 138, 132)" fontWeight="bold" fontSize="1.5rem">
           Buy Insurance
         </Text>
+
+        {/* ======= */}
         <Box w="40%" margin="auto">
           {formBuyInsurance.map((value) => {
             return (

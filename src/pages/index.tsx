@@ -3,7 +3,7 @@ import { Box, Button, Text } from "@chakra-ui/react";
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
 import Header from "@components/utils/Header";
 import useEffect from "react";
-import FormBuyInsurance from "@components/home/FormBuyInsurance";
+import FormBuyInsuranceNew from "@components/home/FormBuyInsuranceNew";
 import History from "@components/home/History";
 
 const Home: NextPage = () => {
@@ -30,8 +30,8 @@ const Home: NextPage = () => {
       <Header title="Insurance" image="favicon.ico" />
       {account ? (
         <Box color="black" textAlign="center">
-          <FormBuyInsurance />
-          <History />
+          <FormBuyInsuranceNew />
+          {/* <History /> */}
         </Box>
       ) : (
         <Button onClick={() => activate("metaMask")}>Connect Wallet</Button>
