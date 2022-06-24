@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Text,
   FormControl,
   FormLabel,
-  Input,
   Select,
   Button,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
   NumberInput,
   NumberInputField,
@@ -29,42 +26,43 @@ import {
   StatHelpText,
 } from "@chakra-ui/react";
 import { CloseIcon, AddIcon } from "@chakra-ui/icons";
-
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
-import {
-  formBuyInsurance,
-  formBuyInsuranceNew,
-} from "@constants/formBuyInsurance";
+import { formBuyInsuranceNew } from "@constants/formBuyInsurance";
 import { buyInsurance, getPriceEth, getPriceClaim } from "@api";
 import { BuyInsuranceType, PriceClaim } from "@types";
 import useAuth from "@hooks/useAuth";
-import { formatPriceToWeiValue, formatDate } from "@helpers/handler";
+import { formatPriceToWeiValue } from "@helpers/format";
 import swal from "sweetalert";
+import {
+  getExpiredDay,
+  priceClaim,
+  checkNullValueInObject,
+} from "@helpers/handler";
 
 const FormBuyInsurance = () => {
   const { account, contractCaller } = useWeb3Wallet();
   const { accessToken, handleLogIn } = useAuth();
   const [input, setInput] = useState<any>();
-  const [currentDay, setCurrentDay] = useState<any>();
+  const [currentDay, setCurrentDay] = useState<string>();
   const [expiredDay, setExpiredDay] = useState<any>();
   const [currency, setCurrency] = useState<any>("DAI");
-
   const [coverValue, setCoverValue] = useState<any>(null);
   const [pClaim, setPClaim] = useState<any>(null);
-
   const [price, setPrice] = useState<any>();
-
   const [input2, setInput2] = useState<any>({
     cover_value: null,
     p_claim: null,
   });
 
+  useEffect(() => {
+    setCurrentDay(new Date().toLocaleDateString());
+  }, []);
+
   //buy insurance
   const handleBuyInsurance = async () => {
-    const { data } = await getPriceEth();
-
     if (!accessToken) return swal("Please sign metamask!");
 
+    const { data } = await getPriceEth();
     const dataPost: BuyInsuranceType = {
       owner: account as string,
       deposit: formatPriceToWeiValue(input.cover_value),
@@ -72,7 +70,6 @@ const FormBuyInsurance = () => {
       liquidation_price: input.p_claim,
       expired: expiredDay.toFixed(),
     };
-
     const buy =
       await contractCaller.current?.insuranceContract.contract.buyInsurance(
         dataPost.owner,
@@ -88,60 +85,23 @@ const FormBuyInsurance = () => {
 
       swal("Buy success!");
     } else {
-      console.log("Error submitting transaction");
+      console.error("Error submitting transaction");
+
       swal("Error submitting transaction");
     }
   };
 
-  //get date to display in cover period
-  const getDate = () => {
-    const date = new Date();
-    setCurrentDay(date.toLocaleDateString());
-    // new Date(date.setDate(date.getDate() + 7));
-    // return date.toLocaleDateString();
-  };
-  //get expired date to display in cover period
-  const getExpiredDay = (value: number) => {
-    const date1 = new Date();
-    let newDate = new Date(date1.setDate(date1.getDate() + value));
-    return newDate.getTime() / 1000;
-  };
-  //api get p-claim
-  const priceClaim = async () => {
-    const { data } = await getPriceEth();
-
+  const checkInputFullFill = (e: any) => {
     const dataPost: PriceClaim = {
-      // deposit: input.cover_value,
-      deposit: 1,
-      current_price: data[0].h.toFixed(),
-      liquidation_price: input.p_claim,
-    };
-    const price = await getPriceClaim(dataPost, accessToken);
-    console.log(price);
-    setPrice(price);
-  };
-  //event check when cover value or p claim change
-  const check = () => {
-    const dataPost: PriceClaim = {
-      // deposit: input.cover_value,
       deposit: input2.cover_value,
       current_price: 1,
-      liquidation_price: input2.p_claim,
+      liquidation_price: e.p_claim ? e.p_claim : input2.p_claim,
     };
-    if (dataPost.deposit !== null && dataPost.liquidation_price !== null) {
-      console.log(`dataPost.deposit: ${dataPost.deposit}`);
-      console.log(`dataPost.liquidation_price: ${dataPost.liquidation_price}`);
-      priceClaim();
-    }
-    // console.log(`coverValue: ${coverValue}`);
-    // console.log(`pClaim: ${pClaim}`);
-  };
 
-  useEffect(() => {
-    getDate();
-    console.log(accessToken);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (checkNullValueInObject(dataPost)) {
+      setPClaim(priceClaim(input2.cover_value, input2.p_claim, accessToken));
+    }
+  };
 
   return (
     <Box marginTop="1rem">
@@ -235,15 +195,15 @@ const FormBuyInsurance = () => {
                                 className={`${value.name}`}
                                 onChange={
                                   value.isDay
-                                    ? (e) => {
+                                    ? (e: any) => {
                                         setExpiredDay(getExpiredDay(Number(e)));
                                         setInput({
                                           ...input,
                                           [value.name]: e,
                                         });
-                                        check();
+                                        checkInputFullFill({ [value.name]: e });
                                       }
-                                    : (e) => {
+                                    : (e: any) => {
                                         setInput({
                                           ...input,
                                           [value.name]: e,
@@ -257,7 +217,7 @@ const FormBuyInsurance = () => {
                                             ? setCoverValue(e)
                                             : setPClaim(e);
                                         }
-                                        check();
+                                        checkInputFullFill({ [value.name]: e });
                                       }
                                 }
                               >

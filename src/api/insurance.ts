@@ -1,6 +1,6 @@
 import { fetcher } from ".";
 import { LogIntype, BuyInsuranceType, PriceClaim } from "src/types/insurance";
-import { parseNumber } from "@helpers/handler";
+import { parseNumber } from "@helpers/format";
 
 export const logIn = async (props: LogIntype) => {
   try {
@@ -88,17 +88,10 @@ export const buyInsurance = async (
   }
 };
 
-export const getPriceClaim = async (
-  props: PriceClaim,
-  accessToken: string
-) => {
+export const getPriceClaim = async (props: PriceClaim, accessToken: string) => {
   try {
-    const {current_price, liquidation_price, deposit } = props;
-
-    // const price = JSON.stringify(deposit, (_, v) =>
-    //   typeof v === "bigint" ? `${v}n` : v
-    // ).replace(/"(-?\d+)n"/g, (_, a) => a);
-
+    const { current_price, liquidation_price, deposit } = props;
+    
     const { data } = await fetcher.post(
       "/get-price-claim",
       {

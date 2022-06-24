@@ -1,6 +1,17 @@
 import { Chains } from "@constants/chains";
-import { ChainData } from "@types";
-import { BigNumber, ethers } from "ethers";
+import { ChainData, PriceClaim } from "@types";
+import type { AddEthereumChainParameter } from "@web3-react/types";
+import { getPriceEth, getPriceClaim } from "@api";
+
+interface BasicChainInformation {
+  urls: string[];
+  name: string;
+}
+
+interface ExtendedChainInformation extends BasicChainInformation {
+  nativeCurrency: AddEthereumChainParameter["nativeCurrency"];
+  blockExplorerUrls: AddEthereumChainParameter["blockExplorerUrls"];
+}
 
 export const truncateAddress = (address: string) => {
   if (!address) return "No Account";
@@ -42,18 +53,6 @@ export function filterMatches<T>(
   }
 
   return result;
-}
-
-import type { AddEthereumChainParameter } from "@web3-react/types";
-
-interface BasicChainInformation {
-  urls: string[];
-  name: string;
-}
-
-interface ExtendedChainInformation extends BasicChainInformation {
-  nativeCurrency: AddEthereumChainParameter["nativeCurrency"];
-  blockExplorerUrls: AddEthereumChainParameter["blockExplorerUrls"];
 }
 
 export const CHAINS: {
@@ -110,33 +109,40 @@ export const URLS: { [chainId: number]: string[] } = Object.keys(
   return accumulator;
 }, {});
 
-export const etherToWei = (amount: number | string) =>
-  ethers.utils.parseEther(amount.toString());
+export const getExpiredDay = (value: number) => {
+  const current_date = new Date();
+  let expiredDate = new Date(
+    current_date.setDate(current_date.getDate() + value)
+  );
 
-export const weiToEther = (wei: string | BigNumber) =>
-  parseFloat(ethers.utils.formatEther(wei));
-
-export const formatDate = (_date: Date) => {
-  let newDate = new Date(_date);
-  return newDate.getTime() / 1000;
+  return expiredDate.getTime() / 1000;
 };
 
-export const formatTimestampToDate = (_date: number) => {
-  let date = _date * 1000;
+export const priceClaim = async (
+  deposit: number,
+  liquidation_price: number,
+  accessToken: string
+) => {
+  const { data } = await getPriceEth();
 
-  let newDate = new Date(date).toLocaleDateString();
+  const dataPost: PriceClaim = {
+    deposit,
+    current_price: data[0].h.toFixed(),
+    liquidation_price,
+  };
+  const price = await getPriceClaim(dataPost, accessToken);
 
-  return newDate;
+  return price;
 };
 
-export const formatPriceToWeiValue = (_num: number) => {
-  return BigInt(_num * 10 ** 18);
-};
+export const checkNullValueInObject = (obj: Object): boolean => {
+  const isNullish = Object.values(obj).every((value) => {
+    if (!value) {
+      return false;
+    }
 
-export const formatWeiValueToPrice = (_num: number) => {
-  return Number(_num) / 10 ** 18;
-};
+    return true;
+  });
 
-export const parseNumber = (_number: any) => {
-  return parseInt(_number);
+  return isNullish;
 };
