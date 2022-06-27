@@ -62,6 +62,7 @@ const FormBuyInsurance = () => {
     setCurrentDay(new Date().toLocaleDateString());
     getCurrentPrice();
     getBalanceAccount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //buy insurance
@@ -338,9 +339,9 @@ const FormBuyInsurance = () => {
               <Stat>
                 <StatLabel>Available:</StatLabel>
                 <StatNumber color={"teal"} fontWeight="bold" fontSize={"18px"}>
-                  {balance.toString().slice(0, 7)} ETH
+                  {balance && balance.toString().slice(0, 7)} ETH
                 </StatNumber>
-                <StatLabel>You'll pay:</StatLabel>
+                <StatLabel>{`You'll pay:`}</StatLabel>
                 <StatNumber color={"teal"} fontWeight="bold" fontSize={"18px"}>
                   {coverValue ? coverValue : 0} ETH
                 </StatNumber>
@@ -356,7 +357,7 @@ const FormBuyInsurance = () => {
                 </StatHelpText>
                 <Checkbox
                   colorScheme="teal"
-                  onChange={(e) => setCheckedItems(e.target.checked)}
+                  onChange={(e: any) => setCheckedItems(e.target.checked)}
                 >
                   I agree to the terms and conditions.
                 </Checkbox>
