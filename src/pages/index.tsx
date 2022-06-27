@@ -33,7 +33,8 @@ const Home: NextPage = () => {
       {account ? (
         <Box color="black" textAlign="center">
           <FormBuyInsuranceNew />
-          {/* <History /> */}
+
+          <History />
         </Box>
       ) : (
         <Button onClick={() => activate("metaMask")}>Connect Wallet</Button>

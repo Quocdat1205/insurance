@@ -9,6 +9,8 @@ import {
   Td,
   TableCaption,
   TableContainer,
+  Text,
+  Box,
 } from "@chakra-ui/react";
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
 import { getInsurancByAddress } from "@api";
@@ -35,16 +37,26 @@ const History = () => {
 
   return (
     <TableContainer>
+      <Text
+        as="h1"
+        color="rgb(58, 138, 132)"
+        fontWeight="bold"
+        fontSize="2rem"
+        textAlign={"center"}
+        margin={"20px"}
+      >
+        History
+      </Text>
       <Table variant="simple">
         <TableCaption>{account}</TableCaption>
         <Thead>
           <Tr>
-            <Th>Token name</Th>
+            <Th>asset</Th>
             <Th>Buy time</Th>
-            <Th>Expire time</Th>
+            <Th>Expired time</Th>
             <Th>cover value</Th>
 
-            <Th>p claim</Th>
+            <Th>p-claim</Th>
 
             <Th>Status</Th>
             <Th isNumeric>Action</Th>

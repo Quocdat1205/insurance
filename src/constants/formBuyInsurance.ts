@@ -1,19 +1,19 @@
 import { FormBuyInsuranceTypeNew } from "src/types/formBuyInsurance";
 export const formBuyInsuranceNew: Array<FormBuyInsuranceTypeNew> = [
-  // {
-  //   id: 0,
-  //   name: "asset",
-  //   label: "ETH",
-  //   max: 100,
-  //   min: 0.00001,
-  //   isDay: false,
-  //   options: [
-  //     {
-  //       label: "ETH",
-  //       value: "eth",
-  //     },
-  //   ],
-  // },
+  {
+    id: 0,
+    name: "asset",
+    label: "ETH",
+    max: 100,
+    min: 0.00001,
+    isDay: false,
+    options: [
+      {
+        label: "ETH",
+        value: "eth",
+      },
+    ],
+  },
   {
     id: 1,
     name: "cover_value",

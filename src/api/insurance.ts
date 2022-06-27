@@ -71,7 +71,7 @@ export const buyInsurance = async (
         current_price: parseNumber(current_price as unknown as string),
         liquidation_price: parseNumber(liquidation_price),
         deposit: parseNumber(price),
-        expired,
+        expired: parseNumber(expired),
       },
       {
         headers: {

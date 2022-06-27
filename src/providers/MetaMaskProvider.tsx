@@ -63,7 +63,7 @@ const useWeb3WalletState = (
   const contractCaller = useRef<ContractCaller | null>(null);
 
   const activate = async (connectorId: ConnectorId, chainId?: number) => {
-    const connector = connectorsData[connectorId].connector;    
+    const connector = connectorsData[connectorId].connector;
     connector.deactivate();
     connector instanceof WalletConnect
       ? await connector.activate(chainId)
@@ -104,6 +104,16 @@ const useWeb3WalletState = (
     activate(getConnectorInfo(connector).id, chainId);
   };
 
+  const getBalance = async () => {
+    const balance =
+      provider &&
+      (await provider!
+        .getBalance(account!)
+        .then((res) => parseFloat(ethers.utils.formatEther(res))));
+    console.log(balance);
+    return balance;
+  };
+
   useEffect(() => {
     if (error) {
       if (error.message.includes("Disconnected from chain")) {
@@ -125,6 +135,7 @@ const useWeb3WalletState = (
     provider,
     balance,
     contractCaller,
+    getBalance,
   };
 };
 
