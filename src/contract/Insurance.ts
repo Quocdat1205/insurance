@@ -1,5 +1,5 @@
 import { BigNumber, Contract, ethers, providers } from "ethers";
-import { weiToEther } from "../helpers/handler";
+import { weiToEther } from "../helpers/format";
 import { INSURANCE_ABI } from "@constants/abi/INSURANCE_ABI";
 
 class InsuranceContract {

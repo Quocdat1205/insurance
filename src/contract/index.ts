@@ -2,7 +2,7 @@ import { BigNumber, ethers, providers } from "ethers";
 import { INSURANCE_ABI } from "@constants/abi/INSURANCE_ABI";
 import InsuranceContract from "./Insurance";
 import { contractAddress } from "@constants/contractAddress";
-import { weiToEther } from "@helpers/handler";
+import { weiToEther } from "@helpers/format";
 
 export class ContractCaller {
   provider: providers.Web3Provider;
