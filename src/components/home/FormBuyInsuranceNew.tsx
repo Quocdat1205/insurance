@@ -217,11 +217,7 @@ const FormBuyInsurance = () => {
                                       </Select>
                                       <Box fontSize={"12px"} paddingTop="10px">
                                         Current price:{" "}
-                                        {v.value === "eth" ? (
-                                          priceEth
-                                        ) : (
-                                          <Box></Box>
-                                        )}
+                                        {v.value === "eth" && ` ${priceEth}$`}
                                       </Box>
                                     </FormControl>
                                   </Box>
@@ -293,9 +289,9 @@ const FormBuyInsurance = () => {
                               </Box>
                             ) : value.name === "p_claim" ? (
                               <Box fontSize={"12px"}>
-                                {/* display Expected value */}
-                                Cover Payout:{" $"}
+                                Cover Payout:{" "}
                                 {pClaim ? pClaim.toString().slice(0, 5) : 0}
+                                ETH
                               </Box>
                             ) : value.name === "asset" ? (
                               <Box fontSize={"12px"}></Box>
