@@ -119,8 +119,8 @@ export const getExpiredDay = (value: number) => {
 };
 
 export const priceClaim = async (
-  deposit: number,
-  liquidation_price: number,
+  deposit: number | bigint,
+  liquidation_price: number | bigint,
   accessToken: string
 ) => {
   const { data } = await getPriceEth();
@@ -131,6 +131,7 @@ export const priceClaim = async (
     liquidation_price,
   };
   const price = await getPriceClaim(dataPost, accessToken);
+  console.log(deposit, liquidation_price);
 
   return price;
 };

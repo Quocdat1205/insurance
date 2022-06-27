@@ -1,10 +1,9 @@
+import React, { useEffect } from "react";
 import type { NextPage } from "next";
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
 import Header from "@components/utils/Header";
-import useEffect from "react";
 import FormBuyInsuranceNew from "@components/home/FormBuyInsuranceNew";
-import History from "@components/home/History";
 
 const Home: NextPage = () => {
   const {
@@ -17,13 +16,15 @@ const Home: NextPage = () => {
   } = useWeb3Wallet();
 
   const handleSignMessage = async () => {
-    // const signature = await contractCaller.current?.sign("hello");
-
-    // console.log(signature);
     console.log(
       await contractCaller.current?.insuranceContract.contract.getAllInsurance()
     );
   };
+
+  useEffect(() => {
+    handleSignMessage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box>

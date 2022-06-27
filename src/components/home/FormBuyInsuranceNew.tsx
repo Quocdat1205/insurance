@@ -99,7 +99,9 @@ const FormBuyInsurance = () => {
     };
 
     if (checkNullValueInObject(dataPost)) {
-      setPClaim(priceClaim(input2.cover_value, input2.p_claim, accessToken));
+      setPClaim(
+        priceClaim(dataPost.deposit, dataPost.liquidation_price, accessToken)
+      );
     }
   };
 
