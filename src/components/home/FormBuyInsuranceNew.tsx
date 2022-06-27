@@ -337,30 +337,73 @@ const FormBuyInsurance = () => {
             </Text>
             <Box>
               <Stat>
-                <StatLabel>Available:</StatLabel>
-                <StatNumber color={"teal"} fontWeight="bold" fontSize={"18px"}>
-                  {balance && balance.toString().slice(0, 7)} ETH
-                </StatNumber>
-                <StatLabel>{`You'll pay:`}</StatLabel>
-                <StatNumber color={"teal"} fontWeight="bold" fontSize={"18px"}>
-                  {coverValue ? coverValue : 0} ETH
-                </StatNumber>
-                <StatLabel>Total cover payout:</StatLabel>
-                <StatNumber color={"teal"} fontWeight="bold">
-                  {pClaim ? pClaim.toString().slice(0, 5) : 0} ETH
-                </StatNumber>
-                <StatHelpText>
-                  {currentDay} -{" "}
-                  {expiredDay
-                    ? new Date(expiredDay * 1000).toLocaleDateString()
-                    : currentDay}
-                </StatHelpText>
-                <Checkbox
-                  colorScheme="teal"
-                  onChange={(e: any) => setCheckedItems(e.target.checked)}
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  margin="auto"
+                  width="50%"
+                  justifyContent="space-between"
+                  borderBottom="1px solid #ddd9d9"
+                  marginBottom="0.5rem"
                 >
-                  I agree to the terms and conditions.
-                </Checkbox>
+                  <StatLabel>Available:</StatLabel>
+                  <StatNumber
+                    color={"teal"}
+                    fontWeight="bold"
+                    fontSize={"18px"}
+                  >
+                    {balance && balance.toString().slice(0, 7)} ETH
+                  </StatNumber>
+                </Box>
+
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  margin="auto"
+                  width="50%"
+                  justifyContent="space-between"
+                  borderBottom="1px solid #ddd9d9"
+                  marginBottom="0.5rem"
+                >
+                  <StatLabel>{`You'll pay:`}</StatLabel>
+                  <StatNumber
+                    color={"teal"}
+                    fontWeight="bold"
+                    fontSize={"18px"}
+                  >
+                    {coverValue ? coverValue : 0} ETH
+                  </StatNumber>
+                </Box>
+
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  margin="auto"
+                  width="50%"
+                  justifyContent="space-between"
+                  borderBottom="1px solid #ddd9d9"
+                  marginBottom="0.5rem"
+                >
+                  <StatLabel>Total cover payout:</StatLabel>
+                  <StatNumber color={"teal"} fontWeight="bold">
+                    {pClaim ? pClaim.toString().slice(0, 5) : 0} ETH
+                  </StatNumber>
+                </Box>
+
+                <Box>
+                  <StatHelpText>
+                    {currentDay} -{" "}
+                    {expiredDay
+                      ? new Date(expiredDay * 1000).toLocaleDateString()
+                      : currentDay}
+                  </StatHelpText>
+                  <Checkbox
+                    colorScheme="teal"
+                    onChange={(e: any) => setCheckedItems(e.target.checked)}
+                  >
+                    I agree to the terms and conditions.
+                  </Checkbox>
+                </Box>
               </Stat>
 
               <Button
