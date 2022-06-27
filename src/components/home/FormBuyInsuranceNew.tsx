@@ -45,7 +45,7 @@ const FormBuyInsurance = () => {
   const [input, setInput] = useState<any>();
   const [currentDay, setCurrentDay] = useState<string>();
   const [expiredDay, setExpiredDay] = useState<any>();
-  const [currency, setCurrency] = useState<any>("USDT");
+  const [currency, setCurrency] = useState<any>("ETH");
   const [coverValue, setCoverValue] = useState<any>(null);
   const [pClaim, setPClaim] = useState<any>();
 
