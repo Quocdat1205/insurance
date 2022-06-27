@@ -6,7 +6,7 @@ export const etherToWei = (amount: number | string) =>
 export const weiToEther = (wei: string | BigNumber) =>
   parseFloat(ethers.utils.formatEther(wei));
 
-export const formatDate = (_date: Date) => {
+export const formatDateToTimestamp = (_date: Date) => {
   let newDate = new Date(_date);
   return newDate.getTime() / 1000;
 };

@@ -45,9 +45,9 @@ const FormBuyInsurance = () => {
   const [input, setInput] = useState<any>();
   const [currentDay, setCurrentDay] = useState<string>();
   const [expiredDay, setExpiredDay] = useState<any>();
-  const [currency, setCurrency] = useState<any>("DAI");
+  const [currency, setCurrency] = useState<any>("USDT");
   const [coverValue, setCoverValue] = useState<any>(null);
-  const [pClaim, setPClaim] = useState<any>(null);
+  const [pClaim, setPClaim] = useState<any>();
   const [price, setPrice] = useState<any>();
   const [input2, setInput2] = useState<any>({
     cover_value: null,
@@ -91,19 +91,30 @@ const FormBuyInsurance = () => {
     }
   };
 
-  const checkInputFullFill = (e: any) => {
+  const checkInputFullFill = async (e: any) => {
     const dataPost: PriceClaim = {
-      deposit: input2.cover_value,
+      deposit: e.cover_value ? e.cover_value : input2.cover_value,
       current_price: 1,
       liquidation_price: e.p_claim ? e.p_claim : input2.p_claim,
     };
 
     if (checkNullValueInObject(dataPost)) {
       setPClaim(
-        priceClaim(dataPost.deposit, dataPost.liquidation_price, accessToken)
+        await priceClaim(
+          dataPost.deposit,
+          dataPost.liquidation_price,
+          accessToken
+        )
       );
+    } else {
+      setPClaim(0);
     }
   };
+  // useEffect(() => {
+  //   if (!input2.cover_value || !input2.p_claim) {
+  //     setPClaim(0);
+  //   }
+  // }, [input2]);
 
   return (
     <Box marginTop="1rem">
@@ -210,10 +221,16 @@ const FormBuyInsurance = () => {
                                           ...input,
                                           [value.name]: e,
                                         });
-                                        setInput2({
-                                          ...input2,
-                                          [value.name]: e,
-                                        });
+                                        {
+                                          setInput2({
+                                            ...input2,
+                                            [value.name]: e,
+                                          });
+                                        }
+                                        // setInput2({
+                                        //   ...input2,
+                                        //   [value.name]: e,
+                                        // });
                                         {
                                           value.name === "cover_value"
                                             ? setCoverValue(e)
@@ -251,10 +268,11 @@ const FormBuyInsurance = () => {
                             ) : value.name === "p_claim" ? (
                               <Box fontSize={"12px"}>
                                 {/* display Expected value */}
-                                Expected value: {price}
+                                Expected value:{" "}
+                                {pClaim ? pClaim.toString().slice(0, 5) : 0}
                               </Box>
                             ) : (
-                              <Box>not ok</Box>
+                              <Box>z</Box>
                             )}
                           </Box>
                         </Td>
@@ -286,8 +304,12 @@ const FormBuyInsurance = () => {
             </Text>
             <Box>
               <Stat>
-                <StatLabel>Price Claim</StatLabel>
-                <StatNumber>0 {currency}</StatNumber>
+                <StatLabel>Expected value:</StatLabel>
+                <StatNumber>
+                  {pClaim ? pClaim.toString().slice(0, 5) : 0} ETH
+                </StatNumber>
+                <StatLabel>You'll pay:</StatLabel>
+                <StatNumber>{coverValue ? coverValue : 0} ETH</StatNumber>
                 <StatHelpText>
                   {currentDay} -{" "}
                   {expiredDay

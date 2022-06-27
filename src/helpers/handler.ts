@@ -132,6 +132,7 @@ export const priceClaim = async (
   };
   const price = await getPriceClaim(dataPost, accessToken);
   console.log(deposit, liquidation_price);
+  console.log(parseFloat(price))
 
   return price;
 };

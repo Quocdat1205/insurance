@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
 import { getInsurancByAddress } from "@api";
-import { formatTimestampToDate } from "@helpers/handler";
+import { formatTimestampToDate, formatDateToTimestamp } from "@helpers/format";
 import useAuth from "@hooks/useAuth";
 
 const History = () => {
@@ -36,15 +36,18 @@ const History = () => {
   return (
     <TableContainer>
       <Table variant="simple">
-        <TableCaption>Buy history</TableCaption>
+        <TableCaption>{account}</TableCaption>
         <Thead>
           <Tr>
-            <Th>Contract value</Th>
-            <Th>Buy price</Th>
-            <Th>Liquidation price</Th>
+            <Th>Token name</Th>
+            <Th>Buy time</Th>
             <Th>Expire time</Th>
-            <Th>State</Th>
-            <Th isNumeric>Owner</Th>
+            <Th>cover value</Th>
+
+            <Th>p claim</Th>
+
+            <Th>Status</Th>
+            <Th isNumeric>Action</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -52,15 +55,21 @@ const History = () => {
             historyByAddress.map((value: any, index: number) => {
               return (
                 <Tr key={index}>
-                  <Td>{value.deposit / 10 ** 18}</Td>
-                  <Td>{value.current_price}</Td>
-                  <Td>{value.liquidation_price}</Td>
+                  <Td>ETH</Td>
+                  <Td>{`${formatTimestampToDate(
+                    formatDateToTimestamp(value.createdAt)
+                  )}`}</Td>
                   <Td>{`${formatTimestampToDate(value.expired)}`}</Td>
+                  <Td>{value.deposit / 10 ** 18} ETH</Td>
+
+                  <Td>{value.liquidation_price} USDT</Td>
+
                   <Td>{value.state}</Td>
                   <Td isNumeric>
-                    {value.owner.slice(0, 5)}
+                    {/* {value.owner.slice(0, 4)}
                     ...
-                    {value.owner.slice(37, 42)}
+                    {value.owner.slice(38, 42)} */}
+                    ...
                   </Td>
                 </Tr>
               );
@@ -76,16 +85,6 @@ const History = () => {
             </Tr>
           )}
         </Tbody>
-        <Tfoot>
-          <Tr>
-            <Th>Contract value</Th>
-            <Th>Buy price</Th>
-            <Th>Liquidation price</Th>
-            <Th>Expire time</Th>
-            <Th>State</Th>
-            <Th isNumeric>Owner</Th>
-          </Tr>
-        </Tfoot>
       </Table>
     </TableContainer>
   );

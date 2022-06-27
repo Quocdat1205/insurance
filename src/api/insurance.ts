@@ -95,7 +95,7 @@ export const getPriceClaim = async (props: PriceClaim, accessToken: string) => {
     const { data } = await fetcher.post(
       "/get-price-claim",
       {
-        value: parseNumber(deposit),
+        value: Number(deposit),
         p_start: parseNumber(current_price as unknown as string),
         p_stop: parseNumber(liquidation_price),
       },
