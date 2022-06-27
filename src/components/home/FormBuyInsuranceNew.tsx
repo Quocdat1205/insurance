@@ -294,7 +294,7 @@ const FormBuyInsurance = () => {
                             ) : value.name === "p_claim" ? (
                               <Box fontSize={"12px"}>
                                 {/* display Expected value */}
-                                Cover Payout:{" "}
+                                Cover Payout:{" $"}
                                 {pClaim ? pClaim.toString().slice(0, 5) : 0}
                               </Box>
                             ) : value.name === "asset" ? (
