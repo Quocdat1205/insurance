@@ -117,22 +117,26 @@ const FormBuyInsurance = () => {
   };
 
   const checkInputFullFill = async (e: any) => {
-    const dataPost: PriceClaim = {
-      deposit: e.cover_value ? e.cover_value : input2.cover_value,
-      current_price: 1,
-      liquidation_price: e.p_claim ? e.p_claim : input2.p_claim,
-    };
+    try {
+      const dataPost: PriceClaim = {
+        deposit: e.cover_value ? e.cover_value : input2.cover_value,
+        current_price: 1,
+        liquidation_price: e.p_claim ? e.p_claim : input2.p_claim,
+      };
 
-    if (checkNullValueInObject(dataPost)) {
-      setPClaim(
-        await priceClaim(
-          dataPost.deposit,
-          dataPost.liquidation_price,
-          accessToken
-        )
-      );
-    } else {
-      setPClaim(0);
+      if (checkNullValueInObject(dataPost)) {
+        setPClaim(
+          await priceClaim(
+            dataPost.deposit,
+            dataPost.liquidation_price,
+            accessToken
+          )
+        );
+      } else {
+        setPClaim(0);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
