@@ -9,7 +9,12 @@ export type BuyInsuranceType = {
   liquidation_price: bigint;
   deposit: number | bigint;
   expired: number;
+  id_transaction: string;
+  asset: string;
+  amount: number
 };
+
+
 export type PriceClaim = {
   current_price: number | bigint;
   liquidation_price: number | bigint;

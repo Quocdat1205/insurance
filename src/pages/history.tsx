@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import type { NextPage } from "next";
 import { Box, Button, Text } from "@chakra-ui/react";
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
-import Header from "@components/utils/Header";
 
 import History from "@components/home/History";
 

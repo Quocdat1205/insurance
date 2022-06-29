@@ -11,7 +11,9 @@ import {
   TableContainer,
   Text,
   Box,
+  Link,
 } from "@chakra-ui/react";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
 import { getInsurancByAddress } from "@api";
 import { formatTimestampToDate, formatDateToTimestamp } from "@helpers/format";
@@ -30,9 +32,8 @@ const History = () => {
 
   const getHistory = async () => {
     const history = await getInsurancByAddress(account as string);
-    console.log(history);
-
     setHistoryByAddress(history);
+    console.log(history);
   };
 
   return (
@@ -59,12 +60,13 @@ const History = () => {
             <Th>p-claim</Th>
 
             <Th>Status</Th>
-            <Th isNumeric>Action</Th>
+            <Th>Contract</Th>
+            <Th isNumeric>Hash ID</Th>
           </Tr>
         </Thead>
         <Tbody>
           {historyByAddress ? (
-            historyByAddress.map((value: any, index: number) => {
+            historyByAddress.list_insurance.map((value: any, index: number) => {
               return (
                 <Tr key={index}>
                   <Td>ETH</Td>
@@ -77,11 +79,20 @@ const History = () => {
                   <Td>{value.liquidation_price} USDT</Td>
 
                   <Td>{value.state}</Td>
+                  <Td>
+                    {" "}
+                    <Link
+                      href={`https://kovan.etherscan.io/tx/${value.id_transaction}`}
+                      isExternal
+                    >
+                      View contract <ExternalLinkIcon mx="2px" />
+                    </Link>
+                  </Td>
+
                   <Td isNumeric>
-                    {/* {value.owner.slice(0, 4)}
+                    {value._id.slice(0, 6)}
                     ...
-                    {value.owner.slice(38, 42)} */}
-                    ...
+                    {value._id.slice(18, 24)}
                   </Td>
                 </Tr>
               );
