@@ -28,7 +28,7 @@ import {
 import { CloseIcon, AddIcon } from "@chakra-ui/icons";
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
 import { formBuyInsuranceNew } from "@constants/formBuyInsurance";
-import { buyInsurance, getPriceEth, getPriceClaim } from "@api";
+import { buyInsurance, getPriceEth } from "@api";
 import { BuyInsuranceType, PriceClaim } from "@types";
 import useAuth from "@hooks/useAuth";
 import { formatPriceToWeiValue } from "@helpers/format";
@@ -69,8 +69,8 @@ const FormBuyInsurance = () => {
   const handleBuyInsurance = async () => {
     if (!accessToken) return swal("Please sign metamask!");
 
-    // const { data } = await getPriceEth();
     const price = await getCurrentPrice();
+
     const dataPost: BuyInsuranceType = {
       owner: account as string,
       current_price: price,
@@ -92,15 +92,15 @@ const FormBuyInsurance = () => {
         { value: dataPost.deposit }
       );
 
-    console.log(buy);
     setInput({
       ...input,
       hash: buy.hash,
     });
+
     if (buy) {
-      console.log(input);
+      const newDataPost = { ...dataPost, id_transaction: buy.hash };
       try {
-        await buyInsurance(dataPost, accessToken);
+        await buyInsurance(newDataPost, accessToken);
       } catch (error) {
         console.log(error);
       }
