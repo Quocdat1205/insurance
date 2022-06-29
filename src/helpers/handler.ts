@@ -1,7 +1,7 @@
 import { Chains } from "@constants/chains";
 import { ChainData, PriceClaim } from "@types";
 import type { AddEthereumChainParameter } from "@web3-react/types";
-import { getPriceEth, getPriceClaim } from "@api";
+import { getPriceEth, getPriceClaim, getPriceEthNew} from "@api";
 
 interface BasicChainInformation {
   urls: string[];
@@ -118,12 +118,21 @@ export const getExpiredDay = (value: number) => {
   return expiredDate.getTime() / 1000;
 };
 
+export const getDayFromInHistory = (value: number) => {
+  const current_date = new Date();
+  let expiredDate = new Date(
+    current_date.setDate(current_date.getDate() - value)
+  );
+
+  return expiredDate.getTime() / 1000;
+};
+
 export const priceClaim = async (
   deposit: number | bigint,
   liquidation_price: number | bigint,
   accessToken: string
 ) => {
-  const { data } = await getPriceEth();
+  const { data } = await getPriceEthNew();
 
   const dataPost: PriceClaim = {
     deposit,

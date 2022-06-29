@@ -31,6 +31,16 @@ export const checkExpiredCookie = async () => {
   }
 };
 
+export const getPriceEthNew = async () => {
+  try {
+    const { data } = await fetcher.get("/fetch-price");
+
+    return data;
+  } catch (error) {
+    return false;
+  }
+};
+
 export const getInsurancByAddress = async (walletAddress: string) => {
   try {
     const { data } = await fetcher.get(
