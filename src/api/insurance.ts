@@ -34,7 +34,7 @@ export const checkExpiredCookie = async () => {
 export const getInsurancByAddress = async (walletAddress: string) => {
   try {
     const { data } = await fetcher.get(
-      `/get-insurance-by-address?owner=${walletAddress.toUpperCase()}`
+      `/get-insurance-by-address?owner=${walletAddress.toUpperCase()}&min=1&max=2&isAll=true`
     );
 
     return data;
@@ -58,7 +58,7 @@ export const buyInsurance = async (
   accessToken: string
 ) => {
   try {
-    const { owner, current_price, liquidation_price, deposit, expired } = props;
+    const { owner, current_price, liquidation_price, deposit, expired, id_transaction, amount, asset } = props;
 
     const price = JSON.stringify(deposit, (_, v) =>
       typeof v === "bigint" ? `${v}n` : v
@@ -68,6 +68,9 @@ export const buyInsurance = async (
       "/buy-insurance",
       {
         owner,
+        id_transaction,
+        asset,
+        amount,
         current_price: parseNumber(current_price as unknown as string),
         liquidation_price: parseNumber(liquidation_price),
         deposit: parseNumber(price),

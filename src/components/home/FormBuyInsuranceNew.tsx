@@ -69,15 +69,19 @@ const FormBuyInsurance = () => {
   const handleBuyInsurance = async () => {
     if (!accessToken) return swal("Please sign metamask!");
 
-    const { data } = await getPriceEth();
+    // const { data } = await getPriceEth();
+    const price = await getCurrentPrice();
     const dataPost: BuyInsuranceType = {
       owner: account as string,
-      current_price: data[0].h.toFixed(),
+      current_price: price,
       liquidation_price: input.p_claim,
       deposit: formatPriceToWeiValue(input.cover_value),
       expired: expiredDay.toFixed(),
+      id_transaction: input.hash,
+      asset: "ETH",
+      amount: input.amount,
     };
-    console.log(dataPost.expired);
+
     const buy =
       await contractCaller.current?.insuranceContract.contract.buyInsurance(
         dataPost.owner,
@@ -88,14 +92,23 @@ const FormBuyInsurance = () => {
         { value: dataPost.deposit }
       );
 
+    console.log(buy);
+    setInput({
+      ...input,
+      hash: buy.hash,
+    });
     if (buy) {
+      console.log(input);
       try {
         await buyInsurance(dataPost, accessToken);
       } catch (error) {
         console.log(error);
       }
 
-      swal("Buy success!");
+      swal(`Buy success 🎉🎉🎉
+            Cover payout: ${pClaim} ${currency}
+            Cover refund amount: ${coverValue * 0.95} ${currency}         
+      `);
     } else {
       console.error("Error submitting transaction");
 
@@ -124,19 +137,28 @@ const FormBuyInsurance = () => {
   };
 
   const getCurrentPrice = async () => {
-    const { data } = await getPriceEth();
-    setPriceEth(data[0].h.toFixed());
+    let price;
+    try {
+      const { data } = await getPriceEth();
+      price = data[0].h.toFixed();
+      if (data) {
+        setPriceEth(data[0].h.toFixed());
+      }
+    } catch (error) {
+      setPriceEth(1200);
+      price = 1200;
+    }
+    return price;
   };
 
   const getBalanceAccount = async () => {
     const bal = await getBalance();
-    console.log(`bal: ${bal}`);
     setBalance(bal);
   };
 
   return (
     <Box marginTop="1rem">
-      <Box>
+      <Box marginBottom={"30px"}>
         <Text
           as="h1"
           color="rgb(58, 138, 132)"
@@ -146,13 +168,13 @@ const FormBuyInsurance = () => {
           Insurance App
         </Text>
         {account && <Text>Your Address: {account}</Text>}
-        <Button
+        {/* <Button
           onClick={() => handleLogIn()}
           margin="0.5rem"
           background="#76c376"
         >
           Sign
-        </Button>
+        </Button> */}
       </Box>
       <Box marginTop="1rem">
         <Text color="rgb(58, 138, 132)" fontWeight="bold" fontSize="1.5rem">
@@ -170,15 +192,16 @@ const FormBuyInsurance = () => {
           display={"flex"}
           justifyContent="space-between"
         >
-          <Box w="70%">
+          <Box w="80%">
             <TableContainer>
               <Table variant="simple">
                 <Thead>
                   <Tr>
                     {/* <Th></Th> */}
                     <Th>asset</Th>
-                    <Th>cover value</Th>
-                    <Th>p-claim</Th>
+                    <Th>amount</Th>
+                    <Th>cover value ㅤ</Th>
+                    <Th>p-claimㅤㅤㅤㅤㅤㅤ</Th>
                     <Th>cover period</Th>
                     <Th isNumeric>
                       <IconButton
@@ -206,16 +229,19 @@ const FormBuyInsurance = () => {
                                     <FormControl key={v.label} marginTop="10px">
                                       {/* <FormLabel htmlFor="coint"></FormLabel> */}
                                       <Select
-                                        w="70%"
+                                        w="80%"
                                         name="coin"
                                         id="coin"
                                         fontSize={"12px"}
+                                        // onChange={() => {
+                                        //   setTest(value);
+                                        // }}
                                       >
                                         <option value={v.value}>
                                           {v.label}
                                         </option>
                                       </Select>
-                                      <Box fontSize={"12px"} paddingTop="10px">
+                                      <Box fontSize={"10px"} paddingTop="10px">
                                         Current price:{" "}
                                         {v.value === "eth" && ` ${priceEth}$`}
                                       </Box>
@@ -229,7 +255,7 @@ const FormBuyInsurance = () => {
                               <NumberInput
                                 max={value.max}
                                 min={value.min}
-                                w="50%"
+                                w="65%"
                                 className={`${value.name}`}
                                 onChange={
                                   value.isDay
@@ -268,7 +294,11 @@ const FormBuyInsurance = () => {
                                   <NumberDecrementStepper fontSize={"7px"} />
                                 </NumberInputStepper>
                               </NumberInput>
-                              <FormLabel htmlFor="amount" marginLeft={"10px"}>
+                              <FormLabel
+                                htmlFor="amount"
+                                marginLeft={"10px"}
+                                fontSize="12px"
+                              >
                                 {value.label === currency
                                   ? currency
                                   : value.label}
@@ -278,7 +308,7 @@ const FormBuyInsurance = () => {
 
                           <Box marginTop={"10px"}>
                             {value.name === "cover_period" ? (
-                              <Box fontSize={"12px"}>
+                              <Box fontSize={"10px"}>
                                 {/* display day in cover period */}
                                 {currentDay} -{" "}
                                 {expiredDay
@@ -288,13 +318,12 @@ const FormBuyInsurance = () => {
                                   : currentDay}
                               </Box>
                             ) : value.name === "p_claim" ? (
-                              <Box fontSize={"12px"}>
+                              <Box fontSize={"10px"}>
                                 Cover Payout:{" "}
-                                {pClaim ? pClaim.toString().slice(0, 5) : 0}
-                                ETH
+                                {pClaim ? pClaim.toString().slice(0, 7) : 0} ETH
                               </Box>
                             ) : value.name === "asset" ? (
-                              <Box fontSize={"12px"}></Box>
+                              <Box fontSize={"10px"}></Box>
                             ) : (
                               <Box>ㅤ</Box>
                             )}
@@ -337,10 +366,10 @@ const FormBuyInsurance = () => {
                   display="flex"
                   alignItems="center"
                   margin="auto"
-                  width="50%"
+                  width="75%"
                   justifyContent="space-between"
                   borderBottom="1px solid #ddd9d9"
-                  marginBottom="0.5rem"
+                  marginBottom="0.7rem"
                 >
                   <StatLabel>Available:</StatLabel>
                   <StatNumber
@@ -356,10 +385,10 @@ const FormBuyInsurance = () => {
                   display="flex"
                   alignItems="center"
                   margin="auto"
-                  width="50%"
+                  width="75%"
                   justifyContent="space-between"
                   borderBottom="1px solid #ddd9d9"
-                  marginBottom="0.5rem"
+                  marginBottom="0.7rem"
                 >
                   <StatLabel>{`You'll pay:`}</StatLabel>
                   <StatNumber
@@ -375,14 +404,33 @@ const FormBuyInsurance = () => {
                   display="flex"
                   alignItems="center"
                   margin="auto"
-                  width="50%"
+                  width="75%"
                   justifyContent="space-between"
                   borderBottom="1px solid #ddd9d9"
-                  marginBottom="0.5rem"
+                  marginBottom="0.7rem"
+                >
+                  <StatLabel>{`Cover refund amount:`}</StatLabel>
+                  <StatNumber
+                    color={"teal"}
+                    fontWeight="bold"
+                    fontSize={"18px"}
+                  >
+                    {coverValue ? coverValue * 0.95 : 0} ETH
+                  </StatNumber>
+                </Box>
+
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  margin="auto"
+                  width="75%"
+                  justifyContent="space-between"
+                  borderBottom="1px solid #ddd9d9"
+                  marginBottom="0.7rem"
                 >
                   <StatLabel>Total cover payout:</StatLabel>
                   <StatNumber color={"teal"} fontWeight="bold">
-                    {pClaim ? pClaim.toString().slice(0, 5) : 0} ETH
+                    {pClaim ? pClaim.toString().slice(0, 7) : 0} ETH
                   </StatNumber>
                 </Box>
 
@@ -395,7 +443,12 @@ const FormBuyInsurance = () => {
                   </StatHelpText>
                   <Checkbox
                     colorScheme="teal"
-                    onChange={(e: any) => setCheckedItems(e.target.checked)}
+                    onChange={(e: any) => {
+                      setCheckedItems(e.target.checked);
+                      if (!checkedItems) {
+                        handleLogIn();
+                      }
+                    }}
                   >
                     I agree to the terms and conditions.
                   </Checkbox>

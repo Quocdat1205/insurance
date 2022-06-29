@@ -110,7 +110,6 @@ const useWeb3WalletState = (
       (await provider!
         .getBalance(account!)
         .then((res) => parseFloat(ethers.utils.formatEther(res))));
-    console.log(balance);
     return balance;
   };
 

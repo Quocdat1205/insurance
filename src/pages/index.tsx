@@ -17,9 +17,7 @@ const Home: NextPage = () => {
   } = useWeb3Wallet();
 
   const handleSignMessage = async () => {
-    console.log(
-      await contractCaller.current?.insuranceContract.contract.getAllInsurance()
-    );
+    await contractCaller.current?.insuranceContract.contract.getAllInsurance();
   };
 
   useEffect(() => {
@@ -33,7 +31,6 @@ const Home: NextPage = () => {
       {account ? (
         <Box color="black" textAlign="center">
           <FormBuyInsuranceNew />
-
           <History />
         </Box>
       ) : (
