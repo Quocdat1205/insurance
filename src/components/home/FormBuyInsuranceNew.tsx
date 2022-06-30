@@ -31,7 +31,12 @@ import { formBuyInsuranceNew } from "@constants/formBuyInsurance";
 import { buyInsurance, getPriceEth, getPriceEthNew } from "@api";
 import { BuyInsuranceType, PriceClaim } from "@types";
 import useAuth from "@hooks/useAuth";
-import { formatPriceToWeiValue } from "@helpers/format";
+import {
+  formatPriceToWeiValue,
+  formatDate,
+  formatTimestampToDate,
+  formatDateToTimestamp,
+} from "@helpers/format";
 import swal from "sweetalert";
 import {
   getExpiredDay,
@@ -44,7 +49,7 @@ const FormBuyInsurance = () => {
   const { account, contractCaller, getBalance } = useWeb3Wallet();
   const { accessToken, handleLogIn } = useAuth();
   const [input, setInput] = useState<any>();
-  const [currentDay, setCurrentDay] = useState<string>();
+  const [currentDay, setCurrentDay] = useState<any>();
   const [expiredDay, setExpiredDay] = useState<any>();
   const [currency, setCurrency] = useState<any>("ETH");
   const [coverValue, setCoverValue] = useState<any>(null);
@@ -60,7 +65,7 @@ const FormBuyInsurance = () => {
   const [checkedItems, setCheckedItems] = useState<any>(false);
 
   useEffect(() => {
-    setCurrentDay(new Date().toLocaleDateString());
+    setCurrentDay(formatDate(formatDateToTimestamp(new Date())));
     getCurrentPrice();
     getBalanceAccount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -200,11 +205,10 @@ const FormBuyInsurance = () => {
               <Table variant="simple">
                 <Thead>
                   <Tr>
-                    {/* <Th></Th> */}
                     <Th>asset</Th>
                     <Th>amount</Th>
                     <Th>cover value ㅤ</Th>
-                    <Th>p-claimㅤㅤㅤㅤㅤㅤ</Th>
+                    <Th>Cover price</Th>
                     <Th>cover period</Th>
                     <Th isNumeric>
                       <IconButton
@@ -217,10 +221,6 @@ const FormBuyInsurance = () => {
                 </Thead>
                 <Tbody>
                   <Tr>
-                    {/* <Td>
-                      <Checkbox colorScheme="green"></Checkbox>
-                    </Td> */}
-                    {/* COVER VALUE */}
                     {formBuyInsuranceNew.map((value) => {
                       return (
                         <Td key={value.id}>
@@ -230,15 +230,11 @@ const FormBuyInsurance = () => {
                                 return (
                                   <Box key={v.label}>
                                     <FormControl key={v.label} marginTop="10px">
-                                      {/* <FormLabel htmlFor="coint"></FormLabel> */}
                                       <Select
                                         w="80%"
                                         name="coin"
                                         id="coin"
                                         fontSize={"12px"}
-                                        // onChange={() => {
-                                        //   setTest(value);
-                                        // }}
                                       >
                                         <option value={v.value}>
                                           {v.label}
@@ -315,9 +311,7 @@ const FormBuyInsurance = () => {
                                 {/* display day in cover period */}
                                 {currentDay} -{" "}
                                 {expiredDay
-                                  ? new Date(
-                                      expiredDay * 1000
-                                    ).toLocaleDateString()
+                                  ? formatDate(expiredDay)
                                   : currentDay}
                               </Box>
                             ) : value.name === "p_claim" ? (
@@ -440,9 +434,7 @@ const FormBuyInsurance = () => {
                 <Box>
                   <StatHelpText>
                     {currentDay} -{" "}
-                    {expiredDay
-                      ? new Date(expiredDay * 1000).toLocaleDateString()
-                      : currentDay}
+                    {expiredDay ? formatDate(expiredDay) : currentDay}
                   </StatHelpText>
                   <Checkbox
                     colorScheme="teal"

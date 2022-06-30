@@ -11,11 +11,29 @@ export const formatDateToTimestamp = (_date: Date) => {
   return newDate.getTime() / 1000;
 };
 
+export const formatDate = (_date: number) => {
+  let date = new Date(_date * 1000);
+  console.log(date)
+  const yyyy = date.getFullYear();
+  let mm = date.getMonth() + 1; // Months start at 0!
+  let dd = date.getDate();
+  console.log(dd)
+  let newDd;
+  let newMm;
+  let newDate;
+  if (dd < 10) { newDd = '0' + dd } else {
+    newDd = dd
+  } ;
+  if (mm < 10) { newMm = '0' + mm } else {
+    newMm = mm
+  };
+  newDate = newDd + '.' + newMm + '.' + yyyy;
+  return newDate;
+};
+
 export const formatTimestampToDate = (_date: number) => {
   let date = _date * 1000;
-
   let newDate = new Date(date).toLocaleDateString();
-
   return newDate;
 };
 
