@@ -150,9 +150,10 @@ const FormBuyInsurance = () => {
     let price;
     try {
       const { data } = await getPriceEthNew();
-      price = data[0].h.toFixed();
+
+      price = data[0].p.toFixed();
       if (data) {
-        setPriceEth(data[0].h.toFixed());
+        setPriceEth(data[0].p.toFixed());
       }
     } catch (error) {
       setPriceEth(1200);
@@ -207,7 +208,7 @@ const FormBuyInsurance = () => {
                   <Tr>
                     <Th>asset</Th>
                     <Th>amount</Th>
-                    <Th>cover value ㅤ</Th>
+                    <Th>cover value</Th>
                     <Th>Cover price</Th>
                     <Th>cover period</Th>
                     <Th isNumeric>
