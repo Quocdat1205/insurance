@@ -29,6 +29,18 @@ export const list_head_order = [
   },
   {
     id: 8,
+    label: "Open price",
+  },
+  {
+    id: 9,
+    label: "SL",
+  },
+  {
+    id: 10,
+    label: "TP",
+  },
+  {
+    id: 11,
     label: "Profit",
   },
 ];

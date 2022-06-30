@@ -11,7 +11,7 @@ const ListOrder = () => {
       const list_order = await getOrderFutures({
         symbol: "ETHVNDC",
         pageSize: 10,
-        page: 1,
+        page: 0,
       });
 
       setListOrder(list_order);
@@ -35,12 +35,15 @@ const ListOrder = () => {
             return (
               <Tr key={val.request_id.place}>
                 <Td>{val.displaying_id}</Td>
-                <Td>{val.opened_at}</Td>
+                <Td>{val.opened_at.slice(0, 10)}</Td>
                 <Td>{val.symbol}</Td>
                 <Td>{val.type}</Td>
                 <Td>{val.side}</Td>
                 <Td>{val.price}</Td>
                 <Td>{val.quantity}</Td>
+                <Td>{val.open_price}</Td>
+                <Td>{val.sl}</Td>
+                <Td>{val.tp}</Td>
                 <Td>{val.profit}</Td>
               </Tr>
             );
