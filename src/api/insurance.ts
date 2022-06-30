@@ -53,6 +53,18 @@ export const getInsurancByAddress = async (walletAddress: string) => {
   }
 };
 
+export const getInsurancByDate = async (walletAddress: string, startDate: number, endDate: number, field: string) => {
+  try {
+    const { data } = await fetcher.get(
+      `/get-insurance-by-date?owner=${walletAddress.toUpperCase()}&from=${startDate}&to=${endDate}&field=${field}`
+    );
+
+    return data;
+  } catch (error) {
+    return false;
+  }
+};
+
 export const getInsuranceById = async (_id: string) => {
   try {
     const { data } = await fetcher.get(`/get-insurance-by-id?_id=${_id}`);
@@ -110,7 +122,7 @@ export const getPriceClaim = async (props: PriceClaim, accessToken: string) => {
       {
         value: Number(deposit),
         p_start: parseNumber(current_price as unknown as string),
-        p_stop: parseNumber(liquidation_price),
+        p_claim: parseNumber(liquidation_price),
       },
       {
         headers: {
