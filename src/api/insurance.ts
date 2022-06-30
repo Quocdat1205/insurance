@@ -49,7 +49,7 @@ export const getPriceEthNew = async () => {
 export const getInsurancByAddress = async (walletAddress: string) => {
   try {
     const { data } = await fetcher.get(
-      `/get-insurance-by-address?owner=${walletAddress.toUpperCase()}&min=1&max=2&isAll=true`
+      `/get-insurance-by-address?owner=${walletAddress.toUpperCase()}&min=0&max=2&isAll=false`
     );
 
     return data;
