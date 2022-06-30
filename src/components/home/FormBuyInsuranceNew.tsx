@@ -28,7 +28,7 @@ import {
 import { CloseIcon, AddIcon } from "@chakra-ui/icons";
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
 import { formBuyInsuranceNew } from "@constants/formBuyInsurance";
-import { buyInsurance, getPriceEth } from "@api";
+import { buyInsurance, getPriceEth, getPriceEthNew } from "@api";
 import { BuyInsuranceType, PriceClaim } from "@types";
 import useAuth from "@hooks/useAuth";
 import { formatPriceToWeiValue } from "@helpers/format";
@@ -106,7 +106,7 @@ const FormBuyInsurance = () => {
       }
 
       swal(`Buy success 🎉🎉🎉
-            Cover payout: ${pClaim} ${currency}
+            Cover payout: ${pClaim.toString().slice(0, 7)} ${currency} 
             Cover refund amount: ${coverValue * 0.95} ${currency}         
       `);
     } else {
@@ -143,7 +143,7 @@ const FormBuyInsurance = () => {
   const getCurrentPrice = async () => {
     let price;
     try {
-      const { data } = await getPriceEth();
+      const { data } = await getPriceEthNew();
       price = data[0].h.toFixed();
       if (data) {
         setPriceEth(data[0].h.toFixed());
