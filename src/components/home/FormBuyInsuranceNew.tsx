@@ -38,6 +38,7 @@ import {
   priceClaim,
   checkNullValueInObject,
 } from "@helpers/handler";
+import Link from "next/link";
 
 const FormBuyInsurance = () => {
   const { account, contractCaller, getBalance } = useWeb3Wallet();
@@ -162,7 +163,7 @@ const FormBuyInsurance = () => {
 
   return (
     <Box marginTop="1rem">
-      <Box marginBottom={"30px"}>
+      <Box marginBottom={"2rem"} position="relative">
         <Text
           as="h1"
           color="rgb(58, 138, 132)"
@@ -172,13 +173,11 @@ const FormBuyInsurance = () => {
           Insurance App
         </Text>
         {account && <Text>Your Address: {account}</Text>}
-        {/* <Button
-          onClick={() => handleLogIn()}
-          margin="0.5rem"
-          background="#76c376"
-        >
-          Sign
-        </Button> */}
+        <Link href="/trade-future">
+          <Button position="absolute" right="0" bg="wheat">
+            View History Trading
+          </Button>
+        </Link>
       </Box>
       <Box marginTop="1rem">
         <Text color="rgb(58, 138, 132)" fontWeight="bold" fontSize="1.5rem">
