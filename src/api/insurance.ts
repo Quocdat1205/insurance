@@ -1,5 +1,10 @@
 import { fetcher } from ".";
-import { LogIntype, BuyInsuranceType, PriceClaim } from "src/types/insurance";
+import {
+  LogIntype,
+  BuyInsuranceType,
+  PriceClaim,
+  GetOrderFuture,
+} from "src/types/insurance";
 import { parseNumber } from "@helpers/format";
 
 export const logIn = async (props: LogIntype) => {
@@ -80,7 +85,16 @@ export const buyInsurance = async (
   accessToken: string
 ) => {
   try {
-    const { owner, current_price, liquidation_price, deposit, expired, id_transaction, amount, asset } = props;
+    const {
+      owner,
+      current_price,
+      liquidation_price,
+      deposit,
+      expired,
+      id_transaction,
+      amount,
+      asset,
+    } = props;
 
     const price = JSON.stringify(deposit, (_, v) =>
       typeof v === "bigint" ? `${v}n` : v
@@ -116,7 +130,7 @@ export const buyInsurance = async (
 export const getPriceClaim = async (props: PriceClaim, accessToken: string) => {
   try {
     const { current_price, liquidation_price, deposit } = props;
-    
+
     const { data } = await fetcher.post(
       "/get-price-claim",
       {
@@ -132,6 +146,22 @@ export const getPriceClaim = async (props: PriceClaim, accessToken: string) => {
     );
 
     return data;
+  } catch (error) {
+    console.error(error);
+
+    return false;
+  }
+};
+
+export const getOrderFutures = async (props: GetOrderFuture) => {
+  try {
+    const { symbol, pageSize, page } = props;
+
+    const { data } = await fetcher.get(
+      `/get-order-future?symbol=${symbol}&pageSize=${pageSize}&page=${page}`
+    );
+
+    return data.data.orders;
   } catch (error) {
     console.error(error);
 

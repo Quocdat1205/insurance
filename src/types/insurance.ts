@@ -11,9 +11,8 @@ export type BuyInsuranceType = {
   expired: number;
   id_transaction: string;
   asset: string;
-  amount: number
+  amount: number;
 };
-
 
 export type PriceClaim = {
   current_price: number | bigint;
@@ -35,4 +34,10 @@ export type InsuranceType = {
 
 export type InsuranceProvider = {
   insurance: Array<InsuranceType> | undefined;
+};
+
+export type GetOrderFuture = {
+  symbol: string;
+  pageSize: number;
+  page: number;
 };
