@@ -23,6 +23,7 @@ import {
   formatDateToTimestamp,
   formatDate,
 } from "@helpers/format";
+import { getDayFromInHistory } from "@helpers/handler";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -34,27 +35,24 @@ const History = () => {
   const [historyByDate, setHistoryByDate] = useState<any>(null);
   const [days, setDays] = useState<any>();
   const [input, setInput] = useState<any>();
-  const [expiredDay, setExpiredDay] = useState<any>("abc");
+  const [optionFilter, setOptionFilter] = useState<any>("all");
 
   const [statusDayPicker, setStatusDayPicker] = useState<any>();
 
   //date picker
 
-  const [dateRange, setDateRange] = useState([new Date(), new Date()]);
+  const [dateRange, setDateRange] = useState([
+    new Date(getDayFromInHistory(30) * 1000),
+    new Date(),
+  ]);
   const [startDate, endDate] = dateRange;
 
   useEffect(() => {
     getHistory();
     getHistoryByDate();
-    console.log(input);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    console.log(
-      `startDate: ${formatDateToTimestamp(
-        startDate
-      )}, endDate: ${formatDateToTimestamp(endDate)}`
-    );
-    console.log(historyByDate);
-  }, [account, input, startDate, endDate, expiredDay]);
+    console.log(getDayFromInHistory(30));
+  }, [account, input, startDate, endDate, optionFilter]);
 
   const getHistory = async () => {
     const history = await getInsurancByAddress(account as string);
@@ -66,18 +64,20 @@ const History = () => {
       account as string,
       formatDateToTimestamp(startDate),
       formatDateToTimestamp(endDate),
-      expiredDay
+      optionFilter
     );
-    console.log(history);
     setHistoryByDate(history);
   };
 
-  const handleDays = (e: any) => {
-    setExpiredDay(e.target.value);
-
-    console.log(input);
+  const handleOptionFilter = (e: any) => {
+    setOptionFilter(e.target.value);
   };
 
+  const ExampleCustomInput = ({ value, onClick }: any, ref: any) => (
+    <button className="example-custom-input" onClick={onClick} ref={ref}>
+      {value}
+    </button>
+  );
   return (
     <>
       <Text
@@ -94,20 +94,22 @@ const History = () => {
       <TableContainer>
         <Box>
           <FormControl display={"flex"} alignItems={"center"}>
-            <Select w="15%" id="date" onChange={handleDays}>
+            <Select w="15%" id="date" onChange={handleOptionFilter}>
               <option value={"buy"}>Buy date</option>
               <option value={"expired"}>Expired date</option>
             </Select>
             <Box
+              marginLeft={"10px"}
               w={"120px"}
               fontSize="14px"
               padding="20px"
-              width="13%"
+              width="15%"
               height={"19px"}
               borderRadius="5px"
               display={"flex"}
               alignItems="center"
-              outline="2px solid transparent"
+              outline="none"
+              border={"1px solid #0000001a"}
             >
               <DatePicker
                 dateFormat="dd.MM.yyyy"

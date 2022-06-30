@@ -13,11 +13,9 @@ export const formatDateToTimestamp = (_date: Date) => {
 
 export const formatDate = (_date: number) => {
   let date = new Date(_date * 1000);
-  console.log(date)
   const yyyy = date.getFullYear();
   let mm = date.getMonth() + 1; // Months start at 0!
   let dd = date.getDate();
-  console.log(dd)
   let newDd;
   let newMm;
   let newDate;
