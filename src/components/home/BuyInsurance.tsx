@@ -111,126 +111,194 @@ const BuyInsurance = () => {
                 </Thead>
                 <Tbody>
                   <Tr>
-                    {formBuyInsuranceNew.map((value) => {
-                      return (
-                        <Td key={value.id}>
-                          {value.options ? (
-                            <>
-                              {value.options.map((v) => {
-                                return (
-                                  <Box key={v.label}>
-                                    <FormControl key={v.label} marginTop="10px">
-                                      <Select
-                                        w="80%"
-                                        name="coin"
-                                        id="coin"
-                                        fontSize={"12px"}
-                                      >
-                                        <option value={v.value}>
-                                          {v.label}
-                                        </option>
-                                      </Select>
-                                      <Box fontSize={"10px"} paddingTop="10px">
-                                        Current price:{" "}
-                                        {v.value === "eth" &&
-                                          ` ${priceEth && priceEth}$`}
-                                      </Box>
-                                    </FormControl>
-                                  </Box>
-                                );
-                              })}
-                            </>
-                          ) : (
-                            <Box display={"flex"} alignItems="center">
-                              <NumberInput
-                                max={value.max}
-                                min={value.min}
-                                w="75%"
-                                className={`${value.name}`}
-                                onChange={
-                                  value.isDay
-                                    ? (e: any) => {
-                                        setExpiredDay(getExpiredDay(Number(e)));
-                                        setInput({
-                                          ...input,
-                                          [value.name]: e,
-                                        });
-                                        checkInputFullFill({ [value.name]: e });
-                                      }
-                                    : (e: any) => {
-                                        setInput({
-                                          ...input,
-                                          [value.name]: e,
-                                        });
-                                        {
-                                          setInput2({
-                                            ...input2,
-                                            [value.name]: e,
-                                          });
-                                        }
-
-                                        {
-                                          value.name === "cover_value"
-                                            ? setCoverValue(e)
-                                            : setCoverPayout(e);
-                                        }
-                                        {
-                                          value.name === "amount";
-                                          setAmount(e);
-                                        }
-                                        {
-                                          value.name === "percent";
-                                          setPercent(e);
-                                        }
-                                        checkInputFullFill({ [value.name]: e });
-                                      }
-                                }
-                              >
-                                <NumberInputField id="amount" placeholder="0" />
-                                <NumberInputStepper>
-                                  <NumberIncrementStepper fontSize={"7px"} />
-                                  <NumberDecrementStepper fontSize={"7px"} />
-                                </NumberInputStepper>
-                              </NumberInput>
-                              <FormLabel
-                                htmlFor="amount"
-                                marginLeft={"10px"}
-                                fontSize="12px"
-                              >
-                                {value.label === currency
-                                  ? currency
-                                  : value.label}
-                              </FormLabel>
-                            </Box>
-                          )}
-
-                          <Box marginTop={"10px"}>
-                            {value.name === "cover_period" ? (
-                              <Box fontSize={"10px"}>
-                                {/* display day in cover period */}
-                                {currentDay}
-                                <br />
-                                {expiredDay
-                                  ? formatDate(expiredDay)
-                                  : currentDay}
-                              </Box>
-                            ) : value.name === "p_claim" ? (
-                              <Box fontSize={"10px"}>
-                                Cover Payout:{" "}
-                                {coverPayout
-                                  ? coverPayout.toString().slice(0, 7)
-                                  : 0}{" "}
-                                ETH
-                              </Box>
-                            ) : value.name === "asset" ? (
-                              <Box fontSize={"10px"}></Box>
-                            ) : (
-                              <Box>ㅤ</Box>
-                            )}
+                    <Td className="asset">
+                      <Box>
+                        <FormControl marginTop="10px">
+                          <Select
+                            w="80%"
+                            name="coin"
+                            id="coin"
+                            fontSize={"12px"}
+                          >
+                            <option>ETH</option>
+                          </Select>
+                          <Box fontSize={"10px"} paddingTop="10px">
+                            Current price: {priceEth && priceEth}$
                           </Box>
-                        </Td>
-                      );
-                    })}
+                        </FormControl>
+                      </Box>
+                    </Td>
+                    <Td className="amount">
+                      <NumberInput
+                        max={10000}
+                        min={0.1}
+                        w="75%"
+                        onChange={(e: any) => {
+                          setInput({
+                            ...input,
+                            amount: e,
+                          });
+                          setAmount(e);
+                        }}
+                      >
+                        <NumberInputField id="amount" placeholder="0" />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper fontSize={"7px"} />
+                          <NumberDecrementStepper fontSize={"7px"} />
+                        </NumberInputStepper>
+                      </NumberInput>
+                      <Box>ㅤ</Box>
+                    </Td>
+
+                    <Td className="percent">
+                      <NumberInput
+                        max={10000}
+                        min={0.1}
+                        w="75%"
+                        value={
+                          input.cover_value && input.amount
+                            ? Number(
+                                (input.cover_value / input.amount) * 100
+                              ).toFixed(4)
+                            : input.percent
+                        }
+                        onChange={(e: any) => {
+                          setInput({
+                            ...input,
+                            percent: e,
+                            cover_value: 0,
+                          });
+                          setPercent(e);
+                        }}
+                      >
+                        <NumberInputField id="amount" placeholder="0" />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper fontSize={"7px"} />
+                          <NumberDecrementStepper fontSize={"7px"} />
+                        </NumberInputStepper>
+                      </NumberInput>
+                      <Box>ㅤ</Box>
+                    </Td>
+
+                    <Td className="cover_value">
+                      <Box display={"flex"} alignItems="center">
+                        <NumberInput
+                          max={10000}
+                          min={0.0001}
+                          w="75%"
+                          value={
+                            input.percent && input.amount
+                              ? Number(
+                                  (input.amount * input.percent) / 100
+                                ).toFixed(2)
+                              : input.cover_value
+                          }
+                          onChange={(e: any) => {
+                            setInput({
+                              ...input,
+                              cover_value: e,
+                              percent: 0,
+                            });
+                            setInput2({
+                              ...input2,
+                              cover_value: e,
+                            });
+                            checkInputFullFill({ cover_value: e });
+                          }}
+                        >
+                          <NumberInputField id="amount" placeholder="0" />
+                          <NumberInputStepper>
+                            <NumberIncrementStepper fontSize={"7px"} />
+                            <NumberDecrementStepper fontSize={"7px"} />
+                          </NumberInputStepper>
+                        </NumberInput>
+                        <FormLabel
+                          htmlFor="amount"
+                          marginLeft={"10px"}
+                          fontSize="12px"
+                        >
+                          {currency}
+                        </FormLabel>
+                      </Box>
+                      <Box>ㅤ</Box>
+                    </Td>
+
+                    <Td className="cover_price">
+                      <Box display={"flex"} alignItems="center">
+                        <NumberInput
+                          max={10000}
+                          min={0.0001}
+                          w="75%"
+                          onChange={(e: any) => {
+                            setInput({
+                              ...input,
+                              cover_price: e,
+                            });
+                            setInput2({
+                              ...input2,
+                              p_claim: e,
+                            });
+
+                            checkInputFullFill({ p_claim: e });
+                          }}
+                        >
+                          <NumberInputField id="amount" placeholder="0" />
+                          <NumberInputStepper>
+                            <NumberIncrementStepper fontSize={"7px"} />
+                            <NumberDecrementStepper fontSize={"7px"} />
+                          </NumberInputStepper>
+                        </NumberInput>
+                        <FormLabel
+                          htmlFor="amount"
+                          marginLeft={"10px"}
+                          fontSize="12px"
+                        >
+                          USDT
+                        </FormLabel>
+                      </Box>
+                      <Box fontSize={"10px"}>
+                        Cover Payout:{" "}
+                        {coverPayout ? coverPayout.toString().slice(0, 7) : 0}{" "}
+                        ETH
+                      </Box>
+                    </Td>
+
+                    <Td className="cover_period">
+                      <Box display={"flex"} alignItems="center">
+                        <NumberInput
+                          max={365}
+                          min={7}
+                          w="75%"
+                          onChange={(e: any) => {
+                            setInput({
+                              ...input,
+                              cover_period: e,
+                            });
+
+                            setExpiredDay(getExpiredDay(Number(e)));
+                            checkInputFullFill({ cover_period: e });
+                          }}
+                        >
+                          <NumberInputField id="amount" placeholder="0" />
+                          <NumberInputStepper>
+                            <NumberIncrementStepper fontSize={"7px"} />
+                            <NumberDecrementStepper fontSize={"7px"} />
+                          </NumberInputStepper>
+                        </NumberInput>
+                        <FormLabel
+                          htmlFor="amount"
+                          marginLeft={"10px"}
+                          fontSize="12px"
+                        >
+                          Days
+                        </FormLabel>
+                      </Box>
+                      <Box fontSize={"10px"}>
+                        {currentDay}
+                        <br />
+                        {expiredDay ? formatDate(expiredDay) : currentDay}
+                      </Box>
+                    </Td>
                   </Tr>
                 </Tbody>
               </Table>
