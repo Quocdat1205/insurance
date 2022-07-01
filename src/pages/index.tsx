@@ -5,6 +5,8 @@ import useWeb3Wallet from "@hooks/useWeb3Wallet";
 import Header from "@components/utils/Header";
 import FormBuyInsuranceNew from "@components/home/FormBuyInsuranceNew";
 import History from "@components/home/History";
+import BuyInsurance from "@components/home/BuyInsurance";
+import HeaderInsurance from "@components/home/Header";
 
 const Home: NextPage = () => {
   const {
@@ -30,7 +32,8 @@ const Home: NextPage = () => {
       <Header title="Insurance" image="favicon.ico" />
       {account ? (
         <Box color="black" textAlign="center">
-          <FormBuyInsuranceNew />
+          <HeaderInsurance />
+          <BuyInsurance />
           <History />
         </Box>
       ) : (

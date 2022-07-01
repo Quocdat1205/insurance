@@ -133,16 +133,12 @@ export const priceClaim = async (
   accessToken: string
 ) => {
   const { data } = await getPriceEthNew();
-
   const dataPost: PriceClaim = {
     deposit,
     current_price: data[0].h.toFixed(),
     liquidation_price,
   };
   const price = await getPriceClaim(dataPost, accessToken);
-  console.log(deposit, liquidation_price);
-  console.log(parseFloat(price))
-
   return price;
 };
 
@@ -151,9 +147,19 @@ export const checkNullValueInObject = (obj: Object): boolean => {
     if (!value) {
       return false;
     }
-
     return true;
   });
 
   return isNullish;
 };
+
+export const getCurrentPrice = async () => {
+  let price: number;
+  try {
+    const { data } = await getPriceEthNew();
+    price = data[0].p.toFixed(); 
+  } catch (error) {
+    price = 1200;
+  }
+  return price;
+}

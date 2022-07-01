@@ -24,6 +24,14 @@ export const formBuyInsuranceNew: Array<FormBuyInsuranceTypeNew> = [
   },
   {
     id: 2,
+    name: "percent",
+    label: "",
+    max: 100,
+    min: 0.1,
+    isDay: false,
+  },
+  {
+    id: 3,
     name: "cover_value",
     label: "ETH",
     max: 100000,
@@ -31,7 +39,7 @@ export const formBuyInsuranceNew: Array<FormBuyInsuranceTypeNew> = [
     isDay: false,
   },
   {
-    id: 3,
+    id: 4,
     name: "p_claim",
     label: "USDT",
     max: 100000,
@@ -39,7 +47,7 @@ export const formBuyInsuranceNew: Array<FormBuyInsuranceTypeNew> = [
     isDay: false,
   },
   {
-    id: 4,
+    id: 5,
     name: "cover_period",
     label: "Days",
     max: 365,
