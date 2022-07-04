@@ -125,6 +125,7 @@ const BuyInsurance = () => {
                           <Box fontSize={"10px"} paddingTop="10px">
                             Current price: {priceEth && priceEth}$
                           </Box>
+                          <Box>ㅤ</Box>
                         </FormControl>
                       </Box>
                     </Td>
@@ -148,6 +149,7 @@ const BuyInsurance = () => {
                         </NumberInputStepper>
                       </NumberInput>
                       <Box>ㅤ</Box>
+                      <Box>ㅤ</Box>
                     </Td>
 
                     <Td className="percent">
@@ -159,24 +161,40 @@ const BuyInsurance = () => {
                           input.cover_value && input.amount
                             ? Number(
                                 (input.cover_value / input.amount) * 100
-                              ).toFixed(4)
+                              ).toFixed(1)
                             : input.percent
                         }
                         onChange={(e: any) => {
                           setInput({
                             ...input,
                             percent: e,
-                            cover_value: 0,
                           });
                           setPercent(e);
+                          if (e && input.amount) {
+                            setInput2({
+                              ...input2,
+                              cover_value: Number(
+                                (input.amount * e) / 100
+                              ).toFixed(3),
+                            });
+                          }
+                          console.log(input);
+                          console.log(input2);
+                          checkInputFullFill({
+                            cover_value: input2.cover_value,
+                          });
                         }}
                       >
                         <NumberInputField id="amount" placeholder="0" />
-                        <NumberInputStepper>
-                          <NumberIncrementStepper fontSize={"7px"} />
-                          <NumberDecrementStepper fontSize={"7px"} />
+                        <NumberInputStepper
+                          display={"flex"}
+                          alignItems={"start"}
+                          justifyContent="center"
+                        >
+                          %
                         </NumberInputStepper>
                       </NumberInput>
+                      <Box>ㅤ</Box>
                       <Box>ㅤ</Box>
                     </Td>
 
@@ -190,7 +208,7 @@ const BuyInsurance = () => {
                             input.percent && input.amount
                               ? Number(
                                   (input.amount * input.percent) / 100
-                                ).toFixed(2)
+                                ).toFixed(3)
                               : input.cover_value
                           }
                           onChange={(e: any) => {
@@ -221,6 +239,7 @@ const BuyInsurance = () => {
                         </FormLabel>
                       </Box>
                       <Box>ㅤ</Box>
+                      <Box>ㅤ</Box>
                     </Td>
 
                     <Td className="cover_price">
@@ -232,7 +251,7 @@ const BuyInsurance = () => {
                           onChange={(e: any) => {
                             setInput({
                               ...input,
-                              cover_price: e,
+                              p_claim: e,
                             });
                             setInput2({
                               ...input2,
@@ -256,10 +275,12 @@ const BuyInsurance = () => {
                           USDT
                         </FormLabel>
                       </Box>
-                      <Box fontSize={"10px"}>
+                      <Box fontSize={"12px"} paddingTop="10px">
                         Cover Payout:{" "}
-                        {coverPayout ? coverPayout.toString().slice(0, 7) : 0}{" "}
-                        ETH
+                        <Box fontWeight={"bold"}>
+                          {coverPayout ? coverPayout.toString().slice(0, 7) : 0}{" "}
+                          ETH
+                        </Box>
                       </Box>
                     </Td>
 
@@ -293,7 +314,7 @@ const BuyInsurance = () => {
                           Days
                         </FormLabel>
                       </Box>
-                      <Box fontSize={"10px"}>
+                      <Box fontSize={"10px"} paddingTop="10px">
                         {currentDay}
                         <br />
                         {expiredDay ? formatDate(expiredDay) : currentDay}
@@ -306,6 +327,7 @@ const BuyInsurance = () => {
           </Box>
           <Summary
             input={input}
+            input2={input2}
             expiredDay={expiredDay}
             coverPayout={coverPayout}
             currency={currency}

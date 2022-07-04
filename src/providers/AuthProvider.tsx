@@ -15,20 +15,27 @@ const AuthProvider = ({ children }: PropType) => {
   const { account, contractCaller } = useWeb3Wallet();
 
   const handleLogIn = async () => {
-    const signature = await contractCaller.current?.sign("Sign this message!");
+    try {
+      const signature = await contractCaller.current?.sign(
+        "Sign this message!"
+      );
 
-    const data: LogIntype = {
-      walletAddress: account as string,
-      signature,
-    };
+      const data: LogIntype = {
+        walletAddress: account as string,
+        signature,
+      };
 
-    const response = await logIn(data);
+      const response = await logIn(data);
 
-    if (!response) {
+      if (!response) {
+        return false;
+      } else {
+        setAccessToken(response);
+        localStorage.setItem("accessToken", response);
+        return true;
+      }
+    } catch (error) {
       return false;
-    } else {
-      setAccessToken(response);
-      localStorage.setItem("accessToken", response);
     }
   };
 

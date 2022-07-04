@@ -13,7 +13,7 @@ import {
 import useAuth from "@hooks/useAuth";
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
 import swal from "sweetalert";
-import { buyInsurance, getPriceEthNew } from "@api";
+import { buyInsurance, getPrice } from "@api";
 import { BuyInsuranceType } from "@types";
 import { formatPriceToWeiValue, formatDate } from "@helpers/format";
 import { getCurrentPrice } from "@helpers/handler";
@@ -24,8 +24,10 @@ const Summary = (props: any) => {
   const { accessToken, handleLogIn } = useAuth();
   const [checkedItems, setCheckedItems] = useState<any>(false);
   const { account, contractCaller, getBalance } = useWeb3Wallet();
-  const { input, expiredDay, coverPayout, currency, currentDay } = props;
+  const { input, input2, expiredDay, coverPayout, currency, currentDay } =
+    props;
   const [balance, setBalance] = useState<any>();
+  const [checkedTerm, setCheckedTerm] = useState<any>(false);
 
   //buy insurance
   const handleBuyInsurance = async () => {
@@ -37,12 +39,14 @@ const Summary = (props: any) => {
       owner: account as string,
       current_price: price,
       liquidation_price: input.p_claim,
-      deposit: formatPriceToWeiValue(input.cover_value),
+      deposit: formatPriceToWeiValue(input2.cover_value),
       expired: expiredDay.toFixed(),
       id_transaction: input.hash,
       asset: "ETH",
       amount: input.amount,
     };
+
+    console.log(dataPost);
 
     const buy =
       await contractCaller.current?.insuranceContract.contract.buyInsurance(
@@ -64,7 +68,7 @@ const Summary = (props: any) => {
 
       swal(`Buy success 🎉🎉🎉
             Cover payout: ${coverPayout.toString().slice(0, 7)} ${currency}
-            Cover refund amount: ${input.cover_value * 0.95} ${currency}
+            Cover refund amount: ${input2.cover_value * 0.95} ${currency}
       `);
     } else {
       console.error("Error submitting transaction");
@@ -92,7 +96,7 @@ const Summary = (props: any) => {
   useEffect(() => {
     getBalanceAccount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props]);
+  }, [props, checkedItems]);
 
   return (
     <Box
@@ -122,14 +126,14 @@ const Summary = (props: any) => {
           <PropsSummary>
             <StatLabel>{`You'll pay:`}</StatLabel>
             <StatNumber color={"teal"} fontWeight="bold" fontSize={"18px"}>
-              {input.cover_value ? input.cover_value : 0} ETH
+              {input2.cover_value ? input2.cover_value : 0} ETH
             </StatNumber>
           </PropsSummary>
 
           <PropsSummary>
             <StatLabel>{`Cover refund amount:`}</StatLabel>
             <StatNumber color={"teal"} fontWeight="bold" fontSize={"18px"}>
-              {input.cover_value ? input.cover_value * 0.95 : 0} ETH
+              {input2.cover_value ? input2.cover_value * 0.95 : 0} ETH
             </StatNumber>
           </PropsSummary>
 
@@ -146,12 +150,19 @@ const Summary = (props: any) => {
             </StatHelpText>
             <Checkbox
               colorScheme="teal"
-              onChange={(e: any) => {
-                setCheckedItems(e.target.checked);
-                if (!checkedItems) {
-                  handleLogIn();
+              onChange={async (e: any) => {
+                if (e.target.checked) {
+                  setCheckedItems(true);
+                  if (await handleLogIn()) {
+                    setCheckedItems(e.target.checked);
+                  } else {
+                    setCheckedItems(false);
+                  }
+                } else {
+                  setCheckedItems(false);
                 }
               }}
+              isChecked={checkedItems}
             >
               I agree to the terms and conditions.
             </Checkbox>

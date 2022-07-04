@@ -1,7 +1,7 @@
 import { Chains } from "@constants/chains";
 import { ChainData, PriceClaim } from "@types";
 import type { AddEthereumChainParameter } from "@web3-react/types";
-import { getPriceEth, getPriceClaim, getPriceEthNew} from "@api";
+import { getPriceEth, getPriceClaim, getPrice} from "@api";
 
 interface BasicChainInformation {
   urls: string[];
@@ -130,9 +130,9 @@ export const getDayFromInHistory = (value: number) => {
 export const priceClaim = async (
   deposit: number | bigint,
   liquidation_price: number | bigint,
-  accessToken: string
+  accessToken: string, 
 ) => {
-  const { data } = await getPriceEthNew();
+  const { data } = await getPrice();
   const dataPost: PriceClaim = {
     deposit,
     current_price: data[0].h.toFixed(),
@@ -156,7 +156,7 @@ export const checkNullValueInObject = (obj: Object): boolean => {
 export const getCurrentPrice = async () => {
   let price: number;
   try {
-    const { data } = await getPriceEthNew();
+    const { data } = await getPrice();
     price = data[0].p.toFixed(); 
   } catch (error) {
     price = 1200;

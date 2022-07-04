@@ -9,7 +9,7 @@ export const list_head_formbuy = [
   },
   {
     id: 3,
-    label: "PERCENT(%)",
+    label: "PERCENTㅤㅤㅤ",
   },
   {
     id: 4,

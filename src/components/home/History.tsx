@@ -28,7 +28,9 @@ const History = () => {
   const [historyByAddress, setHistoryByAddress] = useState<any>(null);
   const [historyByDate, setHistoryByDate] = useState<any>(null);
   const [input, setInput] = useState<any>();
-  const [optionFilter, setOptionFilter] = useState<any>("all");
+  const [optionFilterKindOfTime, setOptionFilterKindOfTime] =
+    useState<any>("all");
+  const [optionFilterAsset, setOptionFilterAsset] = useState<any>("ETH");
   //date picker
   const [dateRange, setDateRange] = useState([
     new Date(getDayFromInHistory(30) * 1000),
@@ -40,7 +42,14 @@ const History = () => {
     getHistory();
     getHistoryByDate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, input, startDate, endDate, optionFilter]);
+  }, [
+    account,
+    input,
+    startDate,
+    endDate,
+    optionFilterKindOfTime,
+    optionFilterAsset,
+  ]);
 
   const getHistory = async () => {
     const history = await getInsurancByAddress(account as string);
@@ -52,13 +61,17 @@ const History = () => {
       account as string,
       formatDateToTimestamp(startDate),
       formatDateToTimestamp(endDate),
-      optionFilter
+      optionFilterKindOfTime,
+      optionFilterAsset
     );
     setHistoryByDate(history);
   };
 
-  const handleOptionFilter = (e: any) => {
-    setOptionFilter(e.target.value);
+  const handleFilterKindOfTime = (e: any) => {
+    setOptionFilterKindOfTime(e.target.value);
+  };
+  const handleFilterAsset = (e: any) => {
+    setOptionFilterAsset(e.target.value);
   };
 
   return (
@@ -77,7 +90,16 @@ const History = () => {
       <TableContainer>
         <Box>
           <FormControl display={"flex"} alignItems={"center"}>
-            <Select w="15%" id="date" onChange={handleOptionFilter}>
+            <Select
+              w="15%"
+              id="token"
+              marginRight={"10px"}
+              onChange={handleFilterAsset}
+            >
+              <option value={"ETH"}>ETH</option>
+              <option value={"BTC"}>BTC</option>
+            </Select>
+            <Select w="15%" id="date" onChange={handleFilterKindOfTime}>
               <option value={"buy"}>Buy date</option>
               <option value={"expired"}>Expired date</option>
             </Select>
