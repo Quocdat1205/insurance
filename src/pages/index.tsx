@@ -3,7 +3,6 @@ import type { NextPage } from "next";
 import { Box, Button } from "@chakra-ui/react";
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
 import Header from "@components/utils/Header";
-import FormBuyInsuranceNew from "@components/home/FormBuyInsuranceNew";
 import History from "@components/home/History";
 import BuyInsurance from "@components/home/BuyInsurance";
 import HeaderInsurance from "@components/home/Header";
