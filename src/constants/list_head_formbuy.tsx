@@ -17,7 +17,7 @@ export const list_head_formbuy = [
   },
   {
     id: 5,
-    label: "COVER PRICEㅤㅤㅤ",
+    label: "COVER PRICEㅤㅤㅤㅤ",
   },
   {
     id: 6,

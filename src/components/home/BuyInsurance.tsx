@@ -42,7 +42,8 @@ const BuyInsurance = () => {
     cover_value: null,
     p_claim: null,
   });
-  const [priceEth, setPriceEth] = useState<any>();
+  const [currentPrice, setCurrentPrice] = useState<any>();
+  const [symbol, setSymbol] = useState<any>("ETHUSDT");
   const [validateForAmount, setValidateForAmount] = useState<any>();
 
   const checkInputFullFill = async (e: any) => {
@@ -58,7 +59,8 @@ const BuyInsurance = () => {
           await priceClaim(
             dataPost.deposit,
             dataPost.liquidation_price,
-            accessToken
+            accessToken,
+            symbol
           )
         );
       } else {
@@ -73,13 +75,21 @@ const BuyInsurance = () => {
     setValidateForAmount(`Amount not empty`);
   };
 
+  const handleSymbol = (e: any) => {
+    setSymbol(e.target.value);
+  };
+
   useEffect(() => {
-    setCurrentDay(formatDate(formatDateToTimestamp(new Date())));
     const price = async () => {
-      const p = await getCurrentPrice();
-      setPriceEth(p);
+      const p = await getCurrentPrice(symbol);
+      setCurrentPrice(p);
     };
     price();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [symbol]);
+  useEffect(() => {
+    setCurrentDay(formatDate(formatDateToTimestamp(new Date())));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -121,11 +131,13 @@ const BuyInsurance = () => {
                             name="coin"
                             id="coin"
                             fontSize={"12px"}
+                            onChange={handleSymbol}
                           >
-                            <option>ETH</option>
+                            <option value={"ETHUSDT"}>ETH</option>
+                            <option value={"BTCUSDT"}>BTC</option>
                           </Select>
                           <Box fontSize={"10px"} marginTop="10px">
-                            Current price: {priceEth && priceEth}$
+                            Current price: {currentPrice && currentPrice}$
                           </Box>
                           <Box>ㅤ</Box>
                         </FormControl>
@@ -178,6 +190,7 @@ const BuyInsurance = () => {
                           setInput({
                             ...input,
                             percent: e,
+                            cover_value: 0,
                           });
                           if (e && input.amount) {
                             setInput2({
@@ -258,8 +271,8 @@ const BuyInsurance = () => {
                     <Td className="cover_price">
                       <Box display={"flex"} alignItems="center">
                         <NumberInput
-                          max={10000}
-                          min={0.0001}
+                          max={100000}
+                          min={1}
                           w="75%"
                           onChange={(e: any) => {
                             setInput({
@@ -345,6 +358,7 @@ const BuyInsurance = () => {
             coverPayout={coverPayout}
             currency={currency}
             currentDay={currentDay}
+            symbol={symbol}
           />
         </Box>
       </Box>

@@ -131,8 +131,9 @@ export const priceClaim = async (
   deposit: number | bigint,
   liquidation_price: number | bigint,
   accessToken: string, 
+  symbol: string
 ) => {
-  const { data } = await getPrice();
+  const { data } = await getPrice(symbol);
   const dataPost: PriceClaim = {
     deposit,
     current_price: data[0].h.toFixed(),
@@ -153,10 +154,11 @@ export const checkNullValueInObject = (obj: Object): boolean => {
   return isNullish;
 };
 
-export const getCurrentPrice = async () => {
+export const getCurrentPrice = async (symbol: string) => {
   let price: number;
+
   try {
-    const { data } = await getPrice();
+    const { data } = await getPrice(symbol);
     price = data[0].p.toFixed(); 
   } catch (error) {
     price = 1200;

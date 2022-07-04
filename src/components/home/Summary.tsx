@@ -24,16 +24,22 @@ const Summary = (props: any) => {
   const { accessToken, handleLogIn } = useAuth();
   const [checkedItems, setCheckedItems] = useState<any>(false);
   const { account, contractCaller, getBalance } = useWeb3Wallet();
-  const { input, input2, expiredDay, coverPayout, currency, currentDay } =
-    props;
+  const {
+    input,
+    input2,
+    expiredDay,
+    coverPayout,
+    currency,
+    currentDay,
+    symbol,
+  } = props;
   const [balance, setBalance] = useState<any>();
-  const [checkedTerm, setCheckedTerm] = useState<any>(false);
 
   //buy insurance
   const handleBuyInsurance = async () => {
     if (!accessToken) return swal("Please sign metamask!");
 
-    const price = await getCurrentPrice();
+    const price = await getCurrentPrice(symbol);
 
     const dataPost: BuyInsuranceType = {
       owner: account as string,
@@ -42,11 +48,9 @@ const Summary = (props: any) => {
       deposit: formatPriceToWeiValue(input2.cover_value),
       expired: expiredDay.toFixed(),
       id_transaction: input.hash,
-      asset: "ETH",
+      asset: symbol.toString().slice(0, 3),
       amount: input.amount,
     };
-
-    console.log(dataPost);
 
     const buy =
       await contractCaller.current?.insuranceContract.contract.buyInsurance(

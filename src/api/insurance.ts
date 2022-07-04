@@ -36,9 +36,9 @@ export const checkExpiredCookie = async () => {
   }
 };
 
-export const getPrice = async () => {
+export const getPrice = async (symbol: string) => {
   try {
-    const { data } = await fetcher.get(`/get-price?symbol=ETHUSDT`);
+    const { data } = await fetcher.get(`/get-price?symbol=${symbol}`);
 
     return data;
   } catch (error) {
