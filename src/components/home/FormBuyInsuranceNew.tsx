@@ -48,7 +48,7 @@ import Link from "next/link";
 const FormBuyInsurance = () => {
   const { account, contractCaller, getBalance } = useWeb3Wallet();
   const { accessToken, handleLogIn } = useAuth();
-  const [input, setInput] = useState<any>();
+  const [input, setInput] = useState<any>({});
   const [currentDay, setCurrentDay] = useState<any>();
   const [expiredDay, setExpiredDay] = useState<any>();
   const [currency, setCurrency] = useState<any>("ETH");
@@ -63,11 +63,15 @@ const FormBuyInsurance = () => {
   const [balance, setBalance] = useState<any>();
 
   const [checkedItems, setCheckedItems] = useState<any>(false);
+  const [percent, setPercent] = useState<any>();
+  const [amount, setAmount] = useState<any>();
 
   useEffect(() => {
     setCurrentDay(formatDate(formatDateToTimestamp(new Date())));
     getCurrentPrice();
     getBalanceAccount();
+    console.log(input);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -167,6 +171,10 @@ const FormBuyInsurance = () => {
     setBalance(bal);
   };
 
+  const checkPercent = async (amount: number, cover_value: number) => {
+    let cal = amount;
+  };
+
   return (
     <Box marginTop="1rem">
       <Box marginBottom={"2rem"} position="relative">
@@ -201,23 +209,26 @@ const FormBuyInsurance = () => {
           display={"flex"}
           justifyContent="space-between"
         >
-          <Box w="80%">
+          <Box w="90%">
             <TableContainer>
               <Table variant="simple">
                 <Thead>
                   <Tr>
                     <Th>asset</Th>
                     <Th>amount</Th>
+                    <Th>percent(%)</Th>
                     <Th>cover value</Th>
-                    <Th>Cover price</Th>
-                    <Th>cover period</Th>
-                    <Th isNumeric>
+                    <Th>Cover priceㅤㅤㅤ</Th>
+                    <Th>
+                      cover <br /> period
+                    </Th>
+                    {/* <Th isNumeric>
                       <IconButton
                         aria-label="Call Segun"
                         size={"xs"}
                         icon={<AddIcon />}
                       />
-                    </Th>
+                    </Th> */}
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -255,7 +266,7 @@ const FormBuyInsurance = () => {
                               <NumberInput
                                 max={value.max}
                                 min={value.min}
-                                w="65%"
+                                w="75%"
                                 className={`${value.name}`}
                                 onChange={
                                   value.isDay
@@ -284,6 +295,14 @@ const FormBuyInsurance = () => {
                                             ? setCoverValue(e)
                                             : setPClaim(e);
                                         }
+                                        {
+                                          value.name === "amount";
+                                          setAmount(e);
+                                        }
+                                        {
+                                          value.name === "percent";
+                                          setPercent(e);
+                                        }
                                         checkInputFullFill({ [value.name]: e });
                                       }
                                 }
@@ -310,7 +329,8 @@ const FormBuyInsurance = () => {
                             {value.name === "cover_period" ? (
                               <Box fontSize={"10px"}>
                                 {/* display day in cover period */}
-                                {currentDay} -{" "}
+                                {currentDay}
+                                <br />
                                 {expiredDay
                                   ? formatDate(expiredDay)
                                   : currentDay}
@@ -331,13 +351,13 @@ const FormBuyInsurance = () => {
                     })}
 
                     {/* ADD ICON */}
-                    <Td isNumeric>
+                    {/* <Td isNumeric>
                       <IconButton
                         aria-label="Call Segun"
                         size={"xs"}
                         icon={<CloseIcon />}
                       />
-                    </Td>
+                    </Td> */}
                   </Tr>
                 </Tbody>
               </Table>

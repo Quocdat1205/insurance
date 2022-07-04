@@ -36,9 +36,9 @@ export const checkExpiredCookie = async () => {
   }
 };
 
-export const getPriceEthNew = async () => {
+export const getPrice = async () => {
   try {
-    const { data } = await fetcher.get("/fetch-price");
+    const { data } = await fetcher.get(`/get-price?symbol=ETHUSDT`);
 
     return data;
   } catch (error) {
@@ -58,10 +58,10 @@ export const getInsurancByAddress = async (walletAddress: string) => {
   }
 };
 
-export const getInsurancByDate = async (walletAddress: string, startDate: number, endDate: number, field: string) => {
+export const getInsurancByDate = async (walletAddress: string, startDate: number, endDate: number, field: string, asset: string) => {
   try {
     const { data } = await fetcher.get(
-      `/get-insurance-by-date?owner=${walletAddress.toUpperCase()}&from=${startDate}&to=${endDate}&field=${field}`
+            `/get-insurance-by-date?owner=${walletAddress.toUpperCase()}&from=${startDate}&to=${endDate}&field=${field}&asset=${asset}`
     );
 
     return data;

@@ -15,32 +15,23 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
 import { getInsurancByAddress, getInsurancByDate } from "@api";
-import {
-  formatTimestampToDate,
-  formatDateToTimestamp,
-  formatDate,
-} from "@helpers/format";
+import { formatDateToTimestamp, formatDate } from "@helpers/format";
 import { getDayFromInHistory } from "@helpers/handler";
 import DatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
+import { list_head_history } from "@constants/list_head_history";
 
 const History = () => {
   const { account, contractCaller } = useWeb3Wallet();
-
   const [historyByAddress, setHistoryByAddress] = useState<any>(null);
   const [historyByDate, setHistoryByDate] = useState<any>(null);
-  const [days, setDays] = useState<any>();
   const [input, setInput] = useState<any>();
-  const [optionFilter, setOptionFilter] = useState<any>("all");
-
-  const [statusDayPicker, setStatusDayPicker] = useState<any>();
-
+  const [optionFilterKindOfTime, setOptionFilterKindOfTime] =
+    useState<any>("all");
+  const [optionFilterAsset, setOptionFilterAsset] = useState<any>("ETH");
   //date picker
-
   const [dateRange, setDateRange] = useState([
     new Date(getDayFromInHistory(30) * 1000),
     new Date(),
@@ -51,8 +42,14 @@ const History = () => {
     getHistory();
     getHistoryByDate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    console.log(getDayFromInHistory(30));
-  }, [account, input, startDate, endDate, optionFilter]);
+  }, [
+    account,
+    input,
+    startDate,
+    endDate,
+    optionFilterKindOfTime,
+    optionFilterAsset,
+  ]);
 
   const getHistory = async () => {
     const history = await getInsurancByAddress(account as string);
@@ -64,20 +61,19 @@ const History = () => {
       account as string,
       formatDateToTimestamp(startDate),
       formatDateToTimestamp(endDate),
-      optionFilter
+      optionFilterKindOfTime,
+      optionFilterAsset
     );
     setHistoryByDate(history);
   };
 
-  const handleOptionFilter = (e: any) => {
-    setOptionFilter(e.target.value);
+  const handleFilterKindOfTime = (e: any) => {
+    setOptionFilterKindOfTime(e.target.value);
+  };
+  const handleFilterAsset = (e: any) => {
+    setOptionFilterAsset(e.target.value);
   };
 
-  const ExampleCustomInput = ({ value, onClick }: any, ref: any) => (
-    <button className="example-custom-input" onClick={onClick} ref={ref}>
-      {value}
-    </button>
-  );
   return (
     <>
       <Text
@@ -94,7 +90,16 @@ const History = () => {
       <TableContainer>
         <Box>
           <FormControl display={"flex"} alignItems={"center"}>
-            <Select w="15%" id="date" onChange={handleOptionFilter}>
+            <Select
+              w="15%"
+              id="token"
+              marginRight={"10px"}
+              onChange={handleFilterAsset}
+            >
+              <option value={"ETH"}>ETH</option>
+              <option value={"BTC"}>BTC</option>
+            </Select>
+            <Select w="15%" id="date" onChange={handleFilterKindOfTime}>
               <option value={"buy"}>Buy date</option>
               <option value={"expired"}>Expired date</option>
             </Select>
@@ -105,7 +110,7 @@ const History = () => {
               padding="20px"
               width="15%"
               height={"19px"}
-              borderRadius="5px"
+              borderRadius="7px"
               display={"flex"}
               alignItems="center"
               outline="none"
@@ -129,13 +134,9 @@ const History = () => {
           <TableCaption>{account}</TableCaption>
           <Thead>
             <Tr>
-              <Th>asset</Th>
-              <Th>Buy time</Th>
-              <Th>Expired time</Th>
-              <Th>cover value</Th>
-              <Th>Cover price</Th>
-              <Th>Status</Th>
-              <Th>Contract</Th>
+              {list_head_history.map((value, index) => {
+                return <Th key={index}>{value.label}</Th>;
+              })}
               <Th isNumeric>Hash ID</Th>
             </Tr>
           </Thead>
@@ -147,15 +148,13 @@ const History = () => {
               ).map((value: any, index: number) => {
                 return (
                   <Tr key={index}>
-                    <Td>ETH</Td>
+                    <Td>{value.asset}</Td>
                     <Td>{`${formatDate(
                       formatDateToTimestamp(value.createdAt)
                     )}`}</Td>
                     <Td>{`${formatDate(value.expired)}`}</Td>
                     <Td>{value.deposit / 10 ** 18} ETH</Td>
-
                     <Td>{value.liquidation_price} USDT</Td>
-
                     <Td>{value.state}</Td>
                     <Td>
                       {" "}
@@ -166,7 +165,6 @@ const History = () => {
                         View contract <ExternalLinkIcon mx="2px" />
                       </Link>
                     </Td>
-
                     <Td isNumeric>
                       {value._id.slice(0, 6)}
                       ...
@@ -177,13 +175,9 @@ const History = () => {
               })
             ) : (
               <Tr>
-                <Td>???</Td>
-                <Td>???</Td>
-                <Td>???</Td>
-                <Td>???</Td>
-                <Td>???</Td>
-                <Td>???</Td>
-                <Td>???</Td>
+                {list_head_history.map((value, index) => {
+                  return <Td key={index}>???</Td>;
+                })}
                 <Td isNumeric>???</Td>
               </Tr>
             )}
