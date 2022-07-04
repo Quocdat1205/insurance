@@ -18,7 +18,6 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
 } from "@chakra-ui/react";
-import { formBuyInsuranceNew } from "@constants/formBuyInsurance";
 import { PriceClaim } from "@types";
 import useAuth from "@hooks/useAuth";
 import { formatDate, formatDateToTimestamp } from "@helpers/format";
@@ -37,31 +36,20 @@ const BuyInsurance = () => {
   const [currentDay, setCurrentDay] = useState<any>();
   const [expiredDay, setExpiredDay] = useState<any>();
   const [currency, setCurrency] = useState<any>("ETH");
-  const [coverValue, setCoverValue] = useState<any>(null);
+
   const [coverPayout, setCoverPayout] = useState<any>();
   const [input2, setInput2] = useState<any>({
     cover_value: null,
     p_claim: null,
   });
   const [priceEth, setPriceEth] = useState<any>();
-  const [percent, setPercent] = useState<any>();
-  const [amount, setAmount] = useState<any>();
-
-  useEffect(() => {
-    setCurrentDay(formatDate(formatDateToTimestamp(new Date())));
-    const price = async () => {
-      const p = await getCurrentPrice();
-      setPriceEth(p);
-    };
-    price();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const [validateForAmount, setValidateForAmount] = useState<any>();
 
   const checkInputFullFill = async (e: any) => {
     try {
       const dataPost: PriceClaim = {
         deposit: e.cover_value ? e.cover_value : input2.cover_value,
-        current_price: 1,
+        current_price: 1, //not use
         liquidation_price: e.p_claim ? e.p_claim : input2.p_claim,
       };
 
@@ -80,6 +68,20 @@ const BuyInsurance = () => {
       console.log(error);
     }
   };
+
+  const handleValidateAmount = () => {
+    setValidateForAmount(`Amount not empty`);
+  };
+
+  useEffect(() => {
+    setCurrentDay(formatDate(formatDateToTimestamp(new Date())));
+    const price = async () => {
+      const p = await getCurrentPrice();
+      setPriceEth(p);
+    };
+    price();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box marginTop="1rem">
@@ -113,7 +115,7 @@ const BuyInsurance = () => {
                   <Tr>
                     <Td className="asset">
                       <Box>
-                        <FormControl marginTop="10px">
+                        <FormControl>
                           <Select
                             w="80%"
                             name="coin"
@@ -122,7 +124,7 @@ const BuyInsurance = () => {
                           >
                             <option>ETH</option>
                           </Select>
-                          <Box fontSize={"10px"} paddingTop="10px">
+                          <Box fontSize={"10px"} marginTop="10px">
                             Current price: {priceEth && priceEth}$
                           </Box>
                           <Box>ㅤ</Box>
@@ -139,7 +141,7 @@ const BuyInsurance = () => {
                             ...input,
                             amount: e,
                           });
-                          setAmount(e);
+                          setValidateForAmount(null);
                         }}
                       >
                         <NumberInputField id="amount" placeholder="0" />
@@ -148,7 +150,15 @@ const BuyInsurance = () => {
                           <NumberDecrementStepper fontSize={"7px"} />
                         </NumberInputStepper>
                       </NumberInput>
-                      <Box>ㅤ</Box>
+                      <Box>
+                        {validateForAmount ? (
+                          <Box fontSize={"10px"} marginTop="10px" color={"red"}>
+                            {validateForAmount}
+                          </Box>
+                        ) : (
+                          <Box marginTop="10px">ㅤ</Box>
+                        )}
+                      </Box>
                       <Box>ㅤ</Box>
                     </Td>
 
@@ -169,7 +179,6 @@ const BuyInsurance = () => {
                             ...input,
                             percent: e,
                           });
-                          setPercent(e);
                           if (e && input.amount) {
                             setInput2({
                               ...input2,
@@ -178,8 +187,9 @@ const BuyInsurance = () => {
                               ).toFixed(3),
                             });
                           }
-                          console.log(input);
-                          console.log(input2);
+                          if (!input.amount) {
+                            handleValidateAmount();
+                          }
                           checkInputFullFill({
                             cover_value: input2.cover_value,
                           });
@@ -194,7 +204,7 @@ const BuyInsurance = () => {
                           %
                         </NumberInputStepper>
                       </NumberInput>
-                      <Box>ㅤ</Box>
+                      <Box marginTop="10px">ㅤ</Box>
                       <Box>ㅤ</Box>
                     </Td>
 
@@ -221,6 +231,9 @@ const BuyInsurance = () => {
                               ...input2,
                               cover_value: e,
                             });
+                            if (!input.amount) {
+                              handleValidateAmount();
+                            }
                             checkInputFullFill({ cover_value: e });
                           }}
                         >
@@ -238,7 +251,7 @@ const BuyInsurance = () => {
                           {currency}
                         </FormLabel>
                       </Box>
-                      <Box>ㅤ</Box>
+                      <Box marginTop="10px">ㅤ</Box>
                       <Box>ㅤ</Box>
                     </Td>
 
@@ -275,9 +288,9 @@ const BuyInsurance = () => {
                           USDT
                         </FormLabel>
                       </Box>
-                      <Box fontSize={"12px"} paddingTop="10px">
+                      <Box fontSize={"10px"} paddingTop="10px">
                         Cover Payout:{" "}
-                        <Box fontWeight={"bold"}>
+                        <Box fontWeight={"bold"} fontSize={"12px"}>
                           {coverPayout ? coverPayout.toString().slice(0, 7) : 0}{" "}
                           ETH
                         </Box>

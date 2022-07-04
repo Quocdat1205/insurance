@@ -68,7 +68,7 @@ const Summary = (props: any) => {
 
       swal(`Buy success 🎉🎉🎉
             Cover payout: ${coverPayout.toString().slice(0, 7)} ${currency}
-            Cover refund amount: ${input2.cover_value * 0.95} ${currency}
+            Cover refund: ${input2.cover_value * 0.95} ${currency}
       `);
     } else {
       console.error("Error submitting transaction");
@@ -118,28 +118,28 @@ const Summary = (props: any) => {
         <Stat>
           <PropsSummary>
             <StatLabel>Available:</StatLabel>
-            <StatNumber color={"teal"} fontWeight="bold" fontSize={"18px"}>
+            <StatNumber color={"teal"} fontWeight="bold" fontSize={"16px"}>
               {balance && balance.toString().slice(0, 7)} ETH
             </StatNumber>
           </PropsSummary>
 
           <PropsSummary>
             <StatLabel>{`You'll pay:`}</StatLabel>
-            <StatNumber color={"teal"} fontWeight="bold" fontSize={"18px"}>
+            <StatNumber color={"teal"} fontWeight="bold" fontSize={"16px"}>
               {input2.cover_value ? input2.cover_value : 0} ETH
             </StatNumber>
           </PropsSummary>
 
           <PropsSummary>
-            <StatLabel>{`Cover refund amount:`}</StatLabel>
-            <StatNumber color={"teal"} fontWeight="bold" fontSize={"18px"}>
+            <StatLabel>{`Cover refund:`}</StatLabel>
+            <StatNumber color={"teal"} fontWeight="bold" fontSize={"16px"}>
               {input2.cover_value ? input2.cover_value * 0.95 : 0} ETH
             </StatNumber>
           </PropsSummary>
 
           <PropsSummary>
             <StatLabel>Total cover payout:</StatLabel>
-            <StatNumber color={"teal"} fontWeight="bold">
+            <StatNumber color={"teal"} fontWeight="bold" fontSize={"16px"}>
               {coverPayout ? coverPayout.toString().slice(0, 7) : 0} ETH
             </StatNumber>
           </PropsSummary>
