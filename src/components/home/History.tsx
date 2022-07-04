@@ -153,7 +153,9 @@ const History = () => {
                       formatDateToTimestamp(value.createdAt)
                     )}`}</Td>
                     <Td>{`${formatDate(value.expired)}`}</Td>
-                    <Td>{value.deposit / 10 ** 18} ETH</Td>
+                    <Td>
+                      {value.deposit / 10 ** 18} {value.asset}
+                    </Td>
                     <Td>{value.liquidation_price} USDT</Td>
                     <Td>{value.state}</Td>
                     <Td>

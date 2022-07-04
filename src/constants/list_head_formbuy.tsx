@@ -5,19 +5,19 @@ export const list_head_formbuy = [
   },
   {
     id: 2,
-    label: "amount",
+    label: "amountㅤㅤㅤ",
   },
   {
     id: 3,
-    label: "PERCENTㅤㅤㅤ",
+    label: "PERCENTㅤㅤ",
   },
   {
     id: 4,
-    label: "COVER VALUEㅤㅤㅤ",
+    label: "COVER VALUEㅤㅤ",
   },
   {
     id: 5,
-    label: "COVER PRICEㅤㅤ",
+    label: "COVER PRICEㅤㅤㅤ",
   },
   {
     id: 6,
