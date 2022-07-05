@@ -161,7 +161,7 @@ const History = () => {
                     <Td>
                       {" "}
                       <Link
-                        href={`https://kovan.etherscan.io/tx/${value.id_transaction}`}
+                        href={`https://ropsten.etherscan.io/tx/${value.id_transaction}`}
                         isExternal
                       >
                         View contract <ExternalLinkIcon mx="2px" />
