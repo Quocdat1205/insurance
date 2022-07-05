@@ -178,6 +178,7 @@ const BuyInsurance = () => {
                           setInput({
                             ...input,
                             percent: e,
+                            cover_value: 0,
                           });
                           if (e && input.amount) {
                             setInput2({

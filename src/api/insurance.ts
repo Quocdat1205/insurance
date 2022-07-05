@@ -58,10 +58,16 @@ export const getInsurancByAddress = async (walletAddress: string) => {
   }
 };
 
-export const getInsurancByDate = async (walletAddress: string, startDate: number, endDate: number, field: string, asset: string) => {
+export const getInsurancByDate = async (
+  walletAddress: string,
+  startDate: number,
+  endDate: number,
+  field: string,
+  asset: string
+) => {
   try {
     const { data } = await fetcher.get(
-            `/get-insurance-by-date?owner=${walletAddress.toUpperCase()}&from=${startDate}&to=${endDate}&field=${field}&asset=${asset}`
+      `/get-insurance-by-date?owner=${walletAddress.toUpperCase()}&from=${startDate}&to=${endDate}&field=${field}&asset=${asset}`
     );
 
     return data;
@@ -94,6 +100,7 @@ export const buyInsurance = async (
       id_transaction,
       amount,
       asset,
+      id_sc,
     } = props;
 
     const price = JSON.stringify(deposit, (_, v) =>
@@ -105,6 +112,7 @@ export const buyInsurance = async (
       {
         owner,
         id_transaction,
+        id_sc,
         asset,
         amount,
         current_price: parseNumber(current_price as unknown as string),
@@ -153,15 +161,28 @@ export const getPriceClaim = async (props: PriceClaim, accessToken: string) => {
   }
 };
 
-export const getOrderFutures = async (props: GetOrderFuture) => {
+export const getOrderFuturesSuccess = async (props: GetOrderFuture) => {
   try {
     const { symbol, pageSize, page } = props;
 
     const { data } = await fetcher.get(
       `/get-order-future?symbol=${symbol}&pageSize=${pageSize}&page=${page}`
     );
+    return data.order_success.data.orders;
+  } catch (error) {
+    console.error(error);
 
-    return data.data.orders;
+    return false;
+  }
+};
+export const getOrderFuturesAvailable = async (props: GetOrderFuture) => {
+  try {
+    const { symbol, pageSize, page } = props;
+
+    const { data } = await fetcher.get(
+      `/get-order-future?symbol=${symbol}&pageSize=${pageSize}&page=${page}`
+    );
+    return data.order_available.data.orders;
   } catch (error) {
     console.error(error);
 

@@ -17,12 +17,12 @@ const Home: NextPage = () => {
     contractCaller,
   } = useWeb3Wallet();
 
-  const handleSignMessage = async () => {
-    await contractCaller.current?.insuranceContract.contract.getAllInsurance();
-  };
+  // const handleSignMessage = async () => {
+  //   await contractCaller.current?.insuranceContract.contract.getAllInsurance();
+  // };
 
   useEffect(() => {
-    handleSignMessage();
+    // handleSignMessage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

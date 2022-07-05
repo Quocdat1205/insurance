@@ -12,6 +12,7 @@ export type BuyInsuranceType = {
   id_transaction: string;
   asset: string;
   amount: number;
+  id_sc: number;
 };
 
 export type PriceClaim = {
