@@ -100,8 +100,8 @@ const History = () => {
               <option value={"BTC"}>BTC</option>
             </Select>
             <Select w="15%" id="date" onChange={handleFilterKindOfTime}>
-              <option value={"buy"}>Buy date</option>
-              <option value={"expired"}>Expired date</option>
+              <option value={"buy"}>Buy Date</option>
+              <option value={"expired"}>Expired Date</option>
             </Select>
             <Box
               marginLeft={"10px"}
@@ -137,7 +137,7 @@ const History = () => {
               {list_head_history.map((value, index) => {
                 return <Th key={index}>{value.label}</Th>;
               })}
-              <Th isNumeric>Hash ID</Th>
+              <Th isNumeric>HashID</Th>
             </Tr>
           </Thead>
           <Tbody>
