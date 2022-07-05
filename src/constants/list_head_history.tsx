@@ -1,19 +1,19 @@
 export const list_head_history = [
   {
     id: 1,
-    label: "asset",
+    label: "assets",
   },
   {
     id: 2,
-    label: "Buy time",
+    label: "Buy Date",
   },
   {
     id: 3,
-    label: "Expired time",
+    label: "Expired Date",
   },
   {
     id: 4,
-    label: "cover value",
+    label: "Escrow",
   },
   {
     id: 5,
@@ -25,6 +25,6 @@ export const list_head_history = [
   },
   {
     id: 7,
-    label: `Contract`,
+    label: `Smartcontract`,
   },
 ];

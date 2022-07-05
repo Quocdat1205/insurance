@@ -1,26 +1,26 @@
 export const list_head_formbuy = [
   {
     id: 1,
-    label: "asset",
+    label: "assets",
   },
   {
     id: 2,
-    label: "amountㅤㅤㅤ",
+    label: "amount",
   },
   {
     id: 3,
-    label: "PERCENTㅤㅤ",
+    label: "percentage",
   },
   {
     id: 4,
-    label: "COVER VALUEㅤㅤ",
+    label: "Escrow",
   },
   {
     id: 5,
-    label: "COVER PRICEㅤㅤㅤ",
+    label: "Cover Price",
   },
   {
     id: 6,
-    label: `COVER PERIOD`,
+    label: `Cover Period`,
   },
 ];

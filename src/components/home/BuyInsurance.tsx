@@ -90,7 +90,7 @@ const BuyInsurance = () => {
           Buy Insurance
         </Text>
         <FormControl display={"flex"} alignItems={"center"}>
-          <FormLabel htmlFor="currency">Cover Currency</FormLabel>
+          <FormLabel htmlFor="currency">Cover Unit</FormLabel>
           <Select w="10%" id="currency" defaultValue={currency}>
             <option value={currency}>{currency}</option>
           </Select>
@@ -131,7 +131,7 @@ const BuyInsurance = () => {
                         </FormControl>
                       </Box>
                     </Td>
-                    <Td className="amount">
+                    <Td className="amount" w={"15%"}>
                       <NumberInput
                         max={10000}
                         min={0.1}
@@ -164,7 +164,7 @@ const BuyInsurance = () => {
 
                     <Td className="percent">
                       <NumberInput
-                        max={10000}
+                        max={100}
                         min={0.1}
                         w="75%"
                         value={
@@ -209,7 +209,7 @@ const BuyInsurance = () => {
                       <Box>ㅤ</Box>
                     </Td>
 
-                    <Td className="cover_value">
+                    <Td className="cover_value" w={"18%"}>
                       <Box display={"flex"} alignItems="center">
                         <NumberInput
                           max={10000}
@@ -298,7 +298,7 @@ const BuyInsurance = () => {
                       </Box>
                     </Td>
 
-                    <Td className="cover_period">
+                    <Td className="cover_period" w={"18%"}>
                       <Box display={"flex"} alignItems="center">
                         <NumberInput
                           max={365}

@@ -121,7 +121,7 @@ const Summary = (props: any) => {
         fontSize="1.5rem"
         padding={"10px 0"}
       >
-        Summary Order
+        Insurance Contract
       </Text>
       <Box>
         <Stat>
@@ -133,21 +133,21 @@ const Summary = (props: any) => {
           </PropsSummary>
 
           <PropsSummary>
-            <StatLabel>{`You'll pay:`}</StatLabel>
+            <StatLabel>{`You'll Pay:`}</StatLabel>
             <StatNumber color={"teal"} fontWeight="bold" fontSize={"16px"}>
               {input2.cover_value ? input2.cover_value : 0} ETH
             </StatNumber>
           </PropsSummary>
 
           <PropsSummary>
-            <StatLabel>{`Cover refund:`}</StatLabel>
+            <StatLabel>{`Total Refund:`}</StatLabel>
             <StatNumber color={"teal"} fontWeight="bold" fontSize={"16px"}>
               {(input2.cover_value * 0.95).toString().slice(0, 7)} ETH
             </StatNumber>
           </PropsSummary>
 
           <PropsSummary>
-            <StatLabel>Total cover payout:</StatLabel>
+            <StatLabel>Cover Payout:</StatLabel>
             <StatNumber color={"teal"} fontWeight="bold" fontSize={"16px"}>
               {coverPayout ? coverPayout.toString().slice(0, 7) : 0} ETH
             </StatNumber>
