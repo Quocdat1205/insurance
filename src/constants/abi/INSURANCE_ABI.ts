@@ -1,11 +1,7 @@
 export const INSURANCE_ABI = [
   {
     inputs: [
-      {
-        internalType: "address payable",
-        name: "poolAddress",
-        type: "address",
-      },
+      { internalType: "address payable", name: "poolAddress", type: "address" },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
@@ -13,12 +9,7 @@ export const INSURANCE_ABI = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "id",
-        type: "bytes32",
-      },
+      { indexed: true, internalType: "bytes32", name: "id", type: "bytes32" },
     ],
     name: "ChainlinkCancelled",
     type: "event",
@@ -26,12 +17,7 @@ export const INSURANCE_ABI = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "id",
-        type: "bytes32",
-      },
+      { indexed: true, internalType: "bytes32", name: "id", type: "bytes32" },
     ],
     name: "ChainlinkFulfilled",
     type: "event",
@@ -39,12 +25,7 @@ export const INSURANCE_ABI = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "id",
-        type: "bytes32",
-      },
+      { indexed: true, internalType: "bytes32", name: "id", type: "bytes32" },
     ],
     name: "ChainlinkRequested",
     type: "event",
@@ -101,18 +82,8 @@ export const INSURANCE_ABI = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "from",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "to",
-        type: "address",
-      },
+      { indexed: true, internalType: "address", name: "from", type: "address" },
+      { indexed: true, internalType: "address", name: "to", type: "address" },
     ],
     name: "OwnershipTransferRequested",
     type: "event",
@@ -120,18 +91,8 @@ export const INSURANCE_ABI = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "from",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "to",
-        type: "address",
-      },
+      { indexed: true, internalType: "address", name: "from", type: "address" },
+      { indexed: true, internalType: "address", name: "to", type: "address" },
     ],
     name: "OwnershipTransferred",
     type: "event",
@@ -166,20 +127,31 @@ export const INSURANCE_ABI = [
     inputs: [
       { internalType: "address", name: "_buyer", type: "address" },
       { internalType: "uint256", name: "_deposit", type: "uint256" },
-      {
-        internalType: "uint256",
-        name: "_current_price",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_liquidation_price",
-        type: "uint256",
-      },
+      { internalType: "uint256", name: "_current_price", type: "uint256" },
+      { internalType: "uint256", name: "_liquidation_price", type: "uint256" },
       { internalType: "uint256", name: "_expire", type: "uint256" },
     ],
     name: "buyInsurance",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    outputs: [
+      {
+        components: [
+          { internalType: "uint256", name: "_idInsurance", type: "uint256" },
+          { internalType: "address", name: "owner", type: "address" },
+          { internalType: "uint256", name: "deposit", type: "uint256" },
+          {
+            internalType: "uint256",
+            name: "liquidation_price",
+            type: "uint256",
+          },
+          { internalType: "uint256", name: "current_price", type: "uint256" },
+          { internalType: "string", name: "state", type: "string" },
+          { internalType: "uint256", name: "expire", type: "uint256" },
+        ],
+        internalType: "struct Insurance.InsuranceStruct",
+        name: "",
+        type: "tuple",
+      },
+    ],
     stateMutability: "payable",
     type: "function",
   },
@@ -199,11 +171,7 @@ export const INSURANCE_ABI = [
     outputs: [
       {
         components: [
-          {
-            internalType: "uint256",
-            name: "_idInsurance",
-            type: "uint256",
-          },
+          { internalType: "uint256", name: "_idInsurance", type: "uint256" },
           { internalType: "address", name: "owner", type: "address" },
           { internalType: "uint256", name: "deposit", type: "uint256" },
           {
@@ -211,11 +179,7 @@ export const INSURANCE_ABI = [
             name: "liquidation_price",
             type: "uint256",
           },
-          {
-            internalType: "uint256",
-            name: "current_price",
-            type: "uint256",
-          },
+          { internalType: "uint256", name: "current_price", type: "uint256" },
           { internalType: "string", name: "state", type: "string" },
           { internalType: "uint256", name: "expire", type: "uint256" },
         ],
@@ -231,15 +195,11 @@ export const INSURANCE_ABI = [
     inputs: [
       { internalType: "uint256", name: "_idInsurance", type: "uint256" },
     ],
-    name: "getInsuraceForId",
+    name: "getInsuranceForId",
     outputs: [
       {
         components: [
-          {
-            internalType: "uint256",
-            name: "_idInsurance",
-            type: "uint256",
-          },
+          { internalType: "uint256", name: "_idInsurance", type: "uint256" },
           { internalType: "address", name: "owner", type: "address" },
           { internalType: "uint256", name: "deposit", type: "uint256" },
           {
@@ -247,11 +207,7 @@ export const INSURANCE_ABI = [
             name: "liquidation_price",
             type: "uint256",
           },
-          {
-            internalType: "uint256",
-            name: "current_price",
-            type: "uint256",
-          },
+          { internalType: "uint256", name: "current_price", type: "uint256" },
           { internalType: "string", name: "state", type: "string" },
           { internalType: "uint256", name: "expire", type: "uint256" },
         ],
@@ -285,6 +241,15 @@ export const INSURANCE_ABI = [
     type: "function",
   },
   {
+    inputs: [
+      { internalType: "address payable", name: "_buyer", type: "address" },
+    ],
+    name: "transfer",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
     inputs: [{ internalType: "address", name: "to", type: "address" }],
     name: "transferOwnership",
     outputs: [],
@@ -300,11 +265,7 @@ export const INSURANCE_ABI = [
     outputs: [
       {
         components: [
-          {
-            internalType: "uint256",
-            name: "_idInsurance",
-            type: "uint256",
-          },
+          { internalType: "uint256", name: "_idInsurance", type: "uint256" },
           { internalType: "address", name: "owner", type: "address" },
           { internalType: "uint256", name: "deposit", type: "uint256" },
           {
@@ -312,11 +273,7 @@ export const INSURANCE_ABI = [
             name: "liquidation_price",
             type: "uint256",
           },
-          {
-            internalType: "uint256",
-            name: "current_price",
-            type: "uint256",
-          },
+          { internalType: "uint256", name: "current_price", type: "uint256" },
           { internalType: "string", name: "state", type: "string" },
           { internalType: "uint256", name: "expire", type: "uint256" },
         ],

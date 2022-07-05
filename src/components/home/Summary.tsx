@@ -44,9 +44,8 @@ const Summary = (props: any) => {
       id_transaction: input.hash,
       asset: "ETH",
       amount: input.amount,
+      id_sc: input.id_sc,
     };
-
-    console.log(dataPost);
 
     const buy =
       await contractCaller.current?.insuranceContract.contract.buyInsurance(
@@ -57,9 +56,17 @@ const Summary = (props: any) => {
         dataPost.expired,
         { value: dataPost.deposit }
       );
+    const idSC =
+      Number(
+        await contractCaller.current?.insuranceContract.contract.totalInsurance()
+      ) + 1;
 
     if (buy) {
-      const newDataPost = { ...dataPost, id_transaction: buy.hash };
+      const newDataPost = {
+        ...dataPost,
+        id_transaction: buy.hash,
+        id_sc: idSC,
+      };
       try {
         await buyInsurance(newDataPost, accessToken);
       } catch (error) {
@@ -68,7 +75,9 @@ const Summary = (props: any) => {
 
       swal(`Buy success 🎉🎉🎉
             Cover payout: ${coverPayout.toString().slice(0, 7)} ${currency}
-            Cover refund: ${input2.cover_value * 0.95} ${currency}
+            Cover refund: ${(input2.cover_value * 0.95)
+              .toString()
+              .slice(0, 7)} ${currency}
       `);
     } else {
       console.error("Error submitting transaction");
@@ -133,7 +142,7 @@ const Summary = (props: any) => {
           <PropsSummary>
             <StatLabel>{`Cover refund:`}</StatLabel>
             <StatNumber color={"teal"} fontWeight="bold" fontSize={"16px"}>
-              {input2.cover_value ? input2.cover_value * 0.95 : 0} ETH
+              {(input2.cover_value * 0.95).toString().slice(0, 7)} ETH
             </StatNumber>
           </PropsSummary>
 
