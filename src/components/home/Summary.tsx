@@ -73,11 +73,12 @@ const Summary = (props: any) => {
         console.log(error);
       }
 
-      swal(`Buy success 🎉🎉🎉
-            Cover payout: ${coverPayout.toString().slice(0, 7)} ${currency}
-            Cover refund: ${(input2.cover_value * 0.95)
+      swal(`Successfully Purchased !
+            Total Refund: ${(input2.cover_value * 0.95)
               .toString()
               .slice(0, 7)} ${currency}
+            Cover Payout: ${coverPayout.toString().slice(0, 7)} ${currency}
+            
       `);
     } else {
       console.error("Error submitting transaction");
