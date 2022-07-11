@@ -107,14 +107,6 @@ const BuyInsuranceNewV2 = () => {
         >
           <Box className="tab1" display={"flex"} justifyContent="space-between">
             <FormControl margin={"10px"} w="200px">
-              <FormLabel htmlFor="currency"></FormLabel>
-              <Select id="currency">
-                <option defaultValue={"init"}>Cover Unit</option>
-                <option value={currency}>{currency}</option>
-              </Select>
-            </FormControl>
-
-            <FormControl margin={"10px"} w="200px">
               <FormLabel htmlFor="assets"></FormLabel>
               <Select
                 name="assets"
@@ -145,6 +137,14 @@ const BuyInsuranceNewV2 = () => {
                     .toString()
                     .slice(0, 6)}
               </Box>
+            </FormControl>
+
+            <FormControl margin={"10px"} w="200px">
+              <FormLabel htmlFor="currency"></FormLabel>
+              <Select id="currency">
+                <option defaultValue={"init"}>Cover Unit</option>
+                <option value={currency}>{currency}</option>
+              </Select>
             </FormControl>
             <FormControl margin={"10px"} w="200px"></FormControl>
           </Box>
@@ -271,8 +271,8 @@ const BuyInsuranceNewV2 = () => {
               <Box>
                 <FormLabel htmlFor="">Cover Price</FormLabel>
                 <NumberInput
-                  max={10000}
-                  min={0.0001}
+                  max={1000000}
+                  min={0.001}
                   onChange={(e: any) => {
                     setInput({
                       ...input,

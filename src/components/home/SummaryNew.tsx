@@ -429,21 +429,28 @@ const Summary = (props: any) => {
                 {expiredDay ? formatDate(expiredDay) : currentDay}
               </StatHelpText>
             )}
+          </Box>
+        </Stat>
 
-            <Box>
-              <Checkbox
-                colorScheme="teal"
-                onChange={async (e: any) => {
-                  if (e.target.checked) {
-                    setIsPaymentWithNain(true);
-                  } else {
-                    setIsPaymentWithNain(false);
-                  }
-                }}
-              >
-                Payment with NAIN
-              </Checkbox>
-            </Box>
+        {/* <Divider orientation="horizontal" /> */}
+      </Box>
+      <Box display={"flex"} justifyContent="center">
+        <Box>
+          <Box display={"flex"} justifyContent="start" marginBottom={"3px"}>
+            <Checkbox
+              colorScheme="teal"
+              onChange={async (e: any) => {
+                if (e.target.checked) {
+                  setIsPaymentWithNain(true);
+                } else {
+                  setIsPaymentWithNain(false);
+                }
+              }}
+            >
+              Payment with NAIN
+            </Checkbox>
+          </Box>
+          <Box display={"flex"} justifyContent="start">
             <Checkbox
               colorScheme="teal"
               onChange={async (e: any) => {
@@ -463,9 +470,9 @@ const Summary = (props: any) => {
               I agree to the terms and conditions.
             </Checkbox>
           </Box>
-        </Stat>
-        {/* <Divider orientation="horizontal" /> */}
+        </Box>
       </Box>
+
       <Button
         colorScheme="teal"
         size="md"
