@@ -1,7 +1,7 @@
 import { Chains } from "@constants/chains";
 import { ChainData, PriceClaim } from "@types";
 import type { AddEthereumChainParameter } from "@web3-react/types";
-import { getPriceEth, getPriceClaim, getPrice} from "@api";
+import { getPriceEth, getPriceClaim, getPrice } from "@api";
 
 interface BasicChainInformation {
   urls: string[];
@@ -118,6 +118,12 @@ export const getExpiredDay = (value: number) => {
   return expiredDate.getTime() / 1000;
 };
 
+export const getExpiredDayFrom = (timestamp: number, value: number) => {
+  const date = new Date(timestamp * 1000);
+  let expiredDate = new Date(date.setDate(date.getDate() + value));
+  return expiredDate.getTime() / 1000;
+};
+
 export const getDayFromInHistory = (value: number) => {
   const current_date = new Date();
   let expiredDate = new Date(
@@ -130,16 +136,20 @@ export const getDayFromInHistory = (value: number) => {
 export const priceClaim = async (
   deposit: number | bigint,
   liquidation_price: number | bigint,
-  accessToken: string, 
+  accessToken: string,
+  symbol: string,
+  currentPrice: any
 ) => {
-  const { data } = await getPrice();
+  const price = getCurrentPriceToken(currentPrice, symbol);
+
   const dataPost: PriceClaim = {
     deposit,
-    current_price: data[0].h.toFixed(),
+    current_price: price ? price : 1000,
     liquidation_price,
   };
-  const price = await getPriceClaim(dataPost, accessToken);
-  return price;
+  const price_claim = await getPriceClaim(dataPost, accessToken);
+
+  return price_claim;
 };
 
 export const checkNullValueInObject = (obj: Object): boolean => {
@@ -154,12 +164,35 @@ export const checkNullValueInObject = (obj: Object): boolean => {
 };
 
 export const getCurrentPrice = async () => {
-  let price: number;
   try {
-    const { data } = await getPrice();
-    price = data[0].p.toFixed(); 
+    const data = await getPrice();
+
+    return data;
   } catch (error) {
-    price = 1200;
+    console.log(error);
+    return false;
   }
-  return price;
-}
+};
+
+export const getCurrentPriceToken = (currentPrice: any, symbol: string) => {
+  let price: number;
+
+  switch (symbol) {
+    case "ETHUSDT": {
+      price = currentPrice.ETHUSDT;
+      break;
+    }
+    case "BTCUSDT": {
+      price = currentPrice.BTCUSDT;
+      break;
+    }
+    case "BNBUSDT": {
+      price = currentPrice.BNBUSDT;
+      break;
+    }
+    default:
+      price = 0;
+      break;
+  }
+  return Number(price);
+};

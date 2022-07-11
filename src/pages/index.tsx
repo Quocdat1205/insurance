@@ -4,8 +4,10 @@ import { Box, Button } from "@chakra-ui/react";
 import useWeb3Wallet from "@hooks/useWeb3Wallet";
 import Header from "@components/utils/Header";
 import History from "@components/home/History";
-import BuyInsurance from "@components/home/BuyInsurance";
+
 import HeaderInsurance from "@components/home/Header";
+
+import BuyInsuranceNewV2 from "@components/home/BuyInsuranceNewV2";
 
 const Home: NextPage = () => {
   const {
@@ -32,7 +34,7 @@ const Home: NextPage = () => {
       {account ? (
         <Box color="black" textAlign="center">
           <HeaderInsurance />
-          <BuyInsurance />
+          <BuyInsuranceNewV2 />
           <History />
         </Box>
       ) : (
