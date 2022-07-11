@@ -20,11 +20,11 @@ const Header = () => {
           Insurance App
         </Text>
         {account && <Text>Your Address: {account}</Text>}
-        <Link href="/trade-future">
+        {/* <Link href="/trade-future">
           <Button position="absolute" right="0" bg="wheat">
             View History Trading
           </Button>
-        </Link>
+        </Link> */}
       </Box>
     </Box>
   );
