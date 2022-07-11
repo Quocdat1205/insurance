@@ -86,6 +86,7 @@ const BuyInsuranceNewV2 = () => {
     checkInputFullFill(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [symbol]);
+
   useEffect(() => {
     setCurrentDay(formatDate(formatDateToTimestamp(new Date())));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -97,193 +98,177 @@ const BuyInsuranceNewV2 = () => {
         Buy Insurance
       </Text>
       <Box marginTop="1rem" display={"flex"} justifyContent="space-between">
-        <Box
-          className="test"
-          w={"60%"}
-          borderWidth="1px"
-          borderRadius="lg"
-          overflow="hidden"
-          padding={"20px"}
-        >
-          <Box className="tab1" display={"flex"} justifyContent="space-between">
-            <FormControl margin={"10px"} w="200px">
-              <FormLabel htmlFor="assets"></FormLabel>
-              <Select
-                name="assets"
-                id="assets"
-                fontSize={"16px"}
-                onChange={(e: any) => {
-                  handleSymbol(e);
-                  checkInputFullFill(e);
-                }}
-                placeholder="Assets"
-              >
-                {list_assets.map((val, index) => {
-                  return (
-                    <option key={val.id} value={val.symbol}>
-                      {val.name}
-                    </option>
-                  );
-                })}
-
-                {/* <option value={"BTCUSDT"}>BTC</option> */}
-              </Select>
-              <Box fontSize={"12px"} marginTop="10px" textAlign={"start"}>
-                Current price: $
-                {getCurrentPriceToken(currentPrice, symbol)
-                  .toString()
-                  .slice(0, 6) &&
-                  getCurrentPriceToken(currentPrice, symbol)
-                    .toString()
-                    .slice(0, 6)}
-              </Box>
-            </FormControl>
-
-            <FormControl margin={"10px"} w="200px">
-              <FormLabel htmlFor="currency"></FormLabel>
+        <Box w={"60%"}>
+          <Box
+            className="tab0"
+            display={"flex"}
+            justifyContent="flex-end"
+            marginBottom={"18px"}
+          >
+            <FormControl w="130px">
               <Select id="currency">
                 <option defaultValue={"init"}>Cover Unit</option>
                 <option value={currency}>{currency}</option>
               </Select>
             </FormControl>
-            <FormControl margin={"10px"} w="200px"></FormControl>
           </Box>
 
-          {/* tab 2 */}
-          <Box className="tab2" display={"flex"} justifyContent="space-between">
-            <FormControl margin={"10px"} w="200px">
-              <FormLabel htmlFor="currency">Amount</FormLabel>
-              <NumberInput
-                placeholder="0"
-                max={10000}
-                min={0.1}
-                onChange={(e: any) => {
-                  setInput({
-                    ...input,
-                    amount: e,
-                  });
-                  setValidateForAmount(null);
-                }}
-              >
-                <NumberInputField id="amount" placeholder="0" />
-                <NumberInputStepper>
-                  <NumberIncrementStepper fontSize={"7px"} />
-                  <NumberDecrementStepper fontSize={"7px"} />
-                </NumberInputStepper>
-              </NumberInput>
-              <Box>
-                {validateForAmount ? (
-                  <Box fontSize={"10px"} marginTop="10px" color={"red"}>
-                    {validateForAmount}
-                  </Box>
-                ) : (
-                  <Box marginTop="10px">ㅤ</Box>
-                )}
-              </Box>
-            </FormControl>
-            <FormControl className="percentage" margin={"10px"} w="200px">
-              <FormLabel htmlFor="">Percentage</FormLabel>
-              <InputGroup>
+          <Box
+            className="test"
+            borderWidth="1px"
+            borderRadius="lg"
+            overflow="hidden"
+            padding={"30px"}
+          >
+            <Box
+              className="tab1"
+              display={"flex"}
+              justifyContent="space-between"
+            >
+              <FormControl margin={"10px"} w="200px">
+                <FormLabel htmlFor="assets"></FormLabel>
+                <Select
+                  name="assets"
+                  id="assets"
+                  fontSize={"16px"}
+                  onChange={(e: any) => {
+                    handleSymbol(e);
+                    checkInputFullFill(e);
+                  }}
+                  placeholder="Assets"
+                >
+                  {list_assets.map((val, index) => {
+                    return (
+                      <option key={val.id} value={val.symbol}>
+                        {val.name}
+                      </option>
+                    );
+                  })}
+
+                  {/* <option value={"BTCUSDT"}>BTC</option> */}
+                </Select>
+                <Box fontSize={"12px"} marginTop="10px" textAlign={"start"}>
+                  Current price: $
+                  {getCurrentPriceToken(currentPrice, symbol)
+                    .toString()
+                    .slice(0, 6) &&
+                    getCurrentPriceToken(currentPrice, symbol)
+                      .toString()
+                      .slice(0, 6)}
+                </Box>
+              </FormControl>
+
+              <FormControl margin={"10px"} w="200px"></FormControl>
+              <FormControl margin={"10px"} w="200px"></FormControl>
+            </Box>
+
+            {/* tab 2 */}
+            <Box
+              className="tab2"
+              display={"flex"}
+              justifyContent="space-between"
+            >
+              <FormControl margin={"10px"} w="200px">
+                <FormLabel htmlFor="currency">Amount</FormLabel>
                 <NumberInput
-                  max={100}
+                  placeholder="0"
+                  max={10000}
                   min={0.1}
-                  value={
-                    input.cover_value && input.amount
-                      ? Number(
-                          (input.cover_value / input.amount) * 100
-                        ).toFixed(1)
-                      : input.percent
-                  }
                   onChange={(e: any) => {
                     setInput({
                       ...input,
-                      percent: e,
-                      cover_value: 0,
+                      amount: e,
                     });
-                    if (e && input.amount) {
-                      setInput2({
-                        ...input2,
-                        cover_value: Number((input.amount * e) / 100).toFixed(
-                          3
-                        ),
-                      });
-                    }
-                    if (!input.amount) {
-                      handleValidateAmount();
-                    }
-                    checkInputFullFill({
-                      cover_value: input2.cover_value,
-                    });
+                    setValidateForAmount(null);
                   }}
                 >
                   <NumberInputField id="amount" placeholder="0" />
-                  <NumberInputStepper
-                    display={"flex"}
-                    justifyContent="center"
-                    alignItems={"center"}
-                    marginRight="15px"
-                  >
-                    %
+                  <NumberInputStepper>
+                    <NumberIncrementStepper fontSize={"7px"} />
+                    <NumberDecrementStepper fontSize={"7px"} />
                   </NumberInputStepper>
                 </NumberInput>
-              </InputGroup>
-            </FormControl>
-            <FormControl className="escrow" margin={"10px"} w="200px">
-              <FormLabel htmlFor="">Escrow</FormLabel>
-              <NumberInput
-                max={10000}
-                min={0.0001}
-                value={
-                  input.percent && input.amount
-                    ? Number((input.amount * input.percent) / 100).toFixed(3)
-                    : input.cover_value
-                }
-                onChange={(e: any) => {
-                  setInput({
-                    ...input,
-                    cover_value: e,
-                    percent: 0,
-                  });
-                  setInput2({
-                    ...input2,
-                    cover_value: e,
-                  });
-                  if (!input.amount) {
-                    handleValidateAmount();
-                  }
-                  checkInputFullFill({ cover_value: e });
-                }}
-              >
-                <NumberInputField id="amount" placeholder="0" />
-                <NumberInputStepper
-                  display={"flex"}
-                  justifyContent="center"
-                  alignItems={"center"}
-                  marginRight="20px"
-                >
-                  {currency}
-                </NumberInputStepper>
-              </NumberInput>
-            </FormControl>
-          </Box>
-          <Box className="tab3" display={"flex"} justifyContent="space-between">
-            <FormControl margin={"10px"} w="200px">
-              <Box>
-                <FormLabel htmlFor="">Cover Price</FormLabel>
+                <Box>
+                  {validateForAmount ? (
+                    <Box fontSize={"10px"} marginTop="10px" color={"red"}>
+                      {validateForAmount}
+                    </Box>
+                  ) : (
+                    <Box marginTop="10px">ㅤ</Box>
+                  )}
+                </Box>
+              </FormControl>
+              <FormControl className="percentage" margin={"10px"} w="200px">
+                <FormLabel htmlFor="">Percentage</FormLabel>
+                <InputGroup>
+                  <NumberInput
+                    max={100}
+                    min={0.1}
+                    value={
+                      input.cover_value && input.amount
+                        ? Number(
+                            (input.cover_value / input.amount) * 100
+                          ).toFixed(1)
+                        : input.percent
+                    }
+                    onChange={(e: any) => {
+                      setInput({
+                        ...input,
+                        percent: e,
+                        cover_value: 0,
+                      });
+                      if (e && input.amount) {
+                        setInput2({
+                          ...input2,
+                          cover_value: Number((input.amount * e) / 100).toFixed(
+                            3
+                          ),
+                        });
+                      }
+                      if (!input.amount) {
+                        handleValidateAmount();
+                      }
+                      checkInputFullFill({
+                        cover_value: input2.cover_value,
+                      });
+                    }}
+                  >
+                    <NumberInputField id="amount" placeholder="0" />
+                    <NumberInputStepper
+                      display={"flex"}
+                      justifyContent="center"
+                      alignItems={"center"}
+                      marginRight="15px"
+                    >
+                      %
+                    </NumberInputStepper>
+                  </NumberInput>
+                </InputGroup>
+              </FormControl>
+              <FormControl className="escrow" margin={"10px"} w="200px">
+                <FormLabel htmlFor="">Escrow</FormLabel>
                 <NumberInput
-                  max={1000000}
-                  min={0.001}
+                  max={10000}
+                  min={0.0001}
+                  value={
+                    input.percent && input.amount
+                      ? Number((input.amount * input.percent) / 100).toFixed(3)
+                      : input.cover_value
+                  }
                   onChange={(e: any) => {
                     setInput({
                       ...input,
-                      p_claim: e,
+                      cover_value: e,
+                      percent: 0,
                     });
                     setInput2({
                       ...input2,
-                      p_claim: e,
+                      cover_value: e,
                     });
-
-                    checkInputFullFill({ p_claim: e });
+                    if (!input.amount) {
+                      handleValidateAmount();
+                    }
+                    checkInputFullFill({ cover_value: e });
                   }}
                 >
                   <NumberInputField id="amount" placeholder="0" />
@@ -293,42 +278,80 @@ const BuyInsuranceNewV2 = () => {
                     alignItems={"center"}
                     marginRight="20px"
                   >
-                    USDT
+                    {currency}
                   </NumberInputStepper>
                 </NumberInput>
-              </Box>
-            </FormControl>
-            <FormControl margin={"10px"} w="200px">
-              <Box>
-                <FormLabel htmlFor="">Cover Period</FormLabel>
-                <NumberInput
-                  max={365}
-                  min={7}
-                  onChange={(e: any) => {
-                    setInput({
-                      ...input,
-                      cover_period: e,
-                    });
+              </FormControl>
+            </Box>
+            <Box
+              className="tab3"
+              display={"flex"}
+              justifyContent="space-between"
+            >
+              <FormControl margin={"10px"} w="200px">
+                <Box>
+                  <FormLabel htmlFor="">Cover Price</FormLabel>
+                  <NumberInput
+                    max={1000000}
+                    min={0.001}
+                    onChange={(e: any) => {
+                      setInput({
+                        ...input,
+                        p_claim: e,
+                      });
+                      setInput2({
+                        ...input2,
+                        p_claim: e,
+                      });
 
-                    setExpiredDay(getExpiredDay(Number(e)));
-                    checkInputFullFill({ cover_period: e });
-                  }}
-                >
-                  <NumberInputField id="amount" placeholder="0" />
-                  <NumberInputStepper
-                    display={"flex"}
-                    justifyContent="center"
-                    alignItems={"center"}
-                    marginRight="20px"
+                      checkInputFullFill({ p_claim: e });
+                    }}
                   >
-                    Days
-                  </NumberInputStepper>
-                </NumberInput>
-              </Box>
-            </FormControl>
-            <FormControl margin={"10px"} w="200px"></FormControl>
+                    <NumberInputField id="amount" placeholder="0" />
+                    <NumberInputStepper
+                      display={"flex"}
+                      justifyContent="center"
+                      alignItems={"center"}
+                      marginRight="20px"
+                    >
+                      USDT
+                    </NumberInputStepper>
+                  </NumberInput>
+                </Box>
+              </FormControl>
+              <FormControl margin={"10px"} w="200px">
+                <Box>
+                  <FormLabel htmlFor="">Cover Period</FormLabel>
+                  <NumberInput
+                    max={365}
+                    min={7}
+                    onChange={(e: any) => {
+                      setInput({
+                        ...input,
+                        cover_period: e,
+                      });
+
+                      setExpiredDay(getExpiredDay(Number(e)));
+                      checkInputFullFill({ cover_period: e });
+                    }}
+                  >
+                    <NumberInputField id="amount" placeholder="0" />
+                    <NumberInputStepper
+                      display={"flex"}
+                      justifyContent="center"
+                      alignItems={"center"}
+                      marginRight="20px"
+                    >
+                      Days
+                    </NumberInputStepper>
+                  </NumberInput>
+                </Box>
+              </FormControl>
+              <FormControl margin={"10px"} w="200px"></FormControl>
+            </Box>
           </Box>
         </Box>
+
         <SummaryNew
           input={input}
           input2={input2}

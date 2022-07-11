@@ -196,3 +196,32 @@ export const getCurrentPriceToken = (currentPrice: any, symbol: string) => {
   }
   return Number(price);
 };
+
+export const calculateIncrease = (value: any, percent: number) => {
+  let result;
+  result = Number(value) + Number(value) * (percent / 100);
+  return result;
+};
+
+export const calculateDecrease = (value: any, percent: number) => {
+  let result;
+  result = Number(value) - Number(value) * (percent / 100);
+  return result;
+};
+
+export const calculatePercentRoi = (old_value: any, new_value: any) => {
+  // ((new roi - old roi) / old roi) * 100
+  let result;
+  result = ((new_value - old_value) / old_value) * 100;
+  return result;
+};
+
+export const getRoi = (cover_value: any, cover_payout: any) => {
+  let roi;
+  if (cover_value) {
+    roi = ((cover_payout - cover_value) / cover_value) * 100;
+  } else {
+    roi = 0;
+  }
+  return roi;
+};
