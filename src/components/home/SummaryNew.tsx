@@ -16,7 +16,13 @@ import swal from "sweetalert";
 import { buyInsurance } from "@api";
 import { BuyInsuranceType } from "@types";
 import { formatPriceToWeiValue, formatDate } from "@helpers/format";
-import { getExpiredDayFrom } from "@helpers/handler";
+import {
+  getExpiredDayFrom,
+  calculateIncrease,
+  calculateDecrease,
+  calculatePercentRoi,
+  getRoi,
+} from "@helpers/handler";
 import styled from "@emotion/styled";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
@@ -109,19 +115,9 @@ const Summary = (props: any) => {
     setBalance(bal);
   };
 
-  const getRoi = (cover_value: any, cover_payout: any) => {
-    let roi;
-    if (cover_value) {
-      roi = ((cover_payout - cover_value) / cover_value) * 100;
-    } else {
-      roi = 0;
-    }
-    return roi;
-  };
-
   const paymentWithNain = (
     value: any,
-    percent: number,
+    percent: any,
     type: string,
     isRoi: boolean,
     isPrice: boolean
@@ -202,17 +198,6 @@ const Summary = (props: any) => {
         </Box>
       </PropsSummary>
     );
-  };
-
-  const calculateIncrease = (value: any, percent: number) => {
-    let result;
-    result = Number(value) + Number(value) * (percent / 100);
-    return result;
-  };
-  const calculateDecrease = (value: any, percent: number) => {
-    let result;
-    result = Number(value) - Number(value) * (percent / 100);
-    return result;
   };
 
   const createNewInput = () => {
@@ -387,11 +372,13 @@ const Summary = (props: any) => {
 
               {isPaymentWithNain ? (
                 paymentWithNain(
-                  getRoi(input2.cover_value, newInput.cover_payout)
-                    .toFixed(2)
-                    .toString()
-                    .slice(0, 4),
-                  5,
+                  getRoi(input2.cover_value, newInput.cover_payout).toFixed(2),
+                  coverPayout
+                    ? calculatePercentRoi(
+                        getRoi(input2.cover_value, coverPayout), //old roi
+                        getRoi(input2.cover_value, newInput.cover_payout) // new roi
+                      ).toFixed()
+                    : 0,
                   "increase",
                   true,
                   false
