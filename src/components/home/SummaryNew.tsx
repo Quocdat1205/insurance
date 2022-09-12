@@ -62,52 +62,56 @@ const Summary = (props: any) => {
     };
 
     console.log(dataPost);
+
     const buy =
       await contractCaller.current?.insuranceContract.contract.buyInsurance(
-        dataPost.owner,
-        dataPost.deposit,
-        dataPost.current_price,
-        dataPost.liquidation_price,
-        dataPost.expired,
-        { value: dataPost.deposit }
+        0xc5f6ecadb23545500300ed265602736b8c0908e5,
+        formatPriceToWeiValue(1000),
+        1400,
+        1000,
+        1665812473,
+        { value: formatPriceToWeiValue(1000) }
       );
-    const idSC =
-      Number(
-        await contractCaller.current?.insuranceContract.contract.totalInsurance()
-      ) + 1;
 
-    if (buy) {
-      const newDataPost = {
-        ...dataPost,
-        id_transaction: buy.hash,
-        id_sc: idSC,
-      };
-      try {
-        await buyInsurance(newDataPost, accessToken);
-      } catch (error) {
-        console.log(error);
-      }
+    console.log(buy);
 
-      swal(`Successfully Purchased !
-            Total Refund: ${(isPaymentWithNain
-              ? input2.cover_value * 0.95 + input2.cover_value * 0.95 * 0.05
-              : input2.cover_value * 0.95
-            )
-              .toString()
-              .slice(0, 7)} ${isPaymentWithNain ? "NAIN" : currency}
-            Cover Payout: ${(isPaymentWithNain
-              ? newInput.cover_payout
-              : coverPayout
-            )
-              .toString()
-              .slice(0, 7)} ${isPaymentWithNain ? "NAIN" : currency}
-            
-      `);
-    } else {
-      console.error("Error submitting transaction");
+    // const idSC =
+    //   Number(
+    //     await contractCaller.current?.insuranceContract.contract.totalInsurance()
+    //   ) + 1;
 
-      swal("Error submitting transaction");
-    }
+    // if (buy) {
+    //   const newDataPost = {
+    //     ...dataPost,
+    //     id_transaction: buy.hash,
+    //     id_sc: idSC,
+    //   };
+    //   try {
+    //     await buyInsurance(newDataPost, accessToken);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+
+    //   swal(`Successfully Purchased !
+    //         Total Refund: ${(isPaymentWithNain
+    //           ? input2.cover_value * 0.95 + input2.cover_value * 0.95 * 0.05
+    //           : input2.cover_value * 0.95
+    //         )
+    //           .toString()
+    //           .slice(0, 7)} ${isPaymentWithNain ? "NAIN" : currency}
+    //         Cover Payout: ${(isPaymentWithNain
+    //           ? newInput.cover_payout
+    //           : coverPayout
+    //         )
+    //           .toString()
+    //           .slice(0, 7)} ${isPaymentWithNain ? "NAIN" : currency}
+
+    //   `);
+    // } else {
+    //   console.error("Error submitting transaction");
+
+    //   swal("Error submitting transaction");
+    // }
   };
 
   const getBalanceAccount = async () => {

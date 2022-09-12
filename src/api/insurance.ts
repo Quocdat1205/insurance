@@ -12,7 +12,7 @@ export const logIn = async (props: LogIntype) => {
     const { walletAddress, signature } = props;
 
     const { data } = await fetcher.post(
-      "/user/log-in",
+      "/log-in",
       {
         walletAddress,
         signature,
@@ -38,7 +38,7 @@ export const checkExpiredCookie = async () => {
 
 export const getPrice = async () => {
   try {
-    const { data } = await fetcher.get(`/get-price-futures`);
+    const { data } = await fetcher.get(`/get-futures-price`);
 
     return data;
   } catch (error) {
@@ -52,7 +52,7 @@ export const getInsurancByAddress = async (walletAddress: string) => {
       `/get-insurance-by-address?owner=${walletAddress.toUpperCase()}&min=0&max=2&isAll=false`
     );
 
-    return data;
+    return null;
   } catch (error) {
     return false;
   }
@@ -70,7 +70,7 @@ export const getInsurancByDate = async (
       `/get-insurance-by-date?owner=${walletAddress.toUpperCase()}&from=${startDate}&to=${endDate}&field=${field}&asset=${asset}`
     );
 
-    return data;
+    return null;
   } catch (error) {
     return false;
   }
